@@ -1,12 +1,14 @@
 package com.trianguloy.quickclipboardwidget;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.ClipboardManager;
 import android.os.Bundle;
 import android.text.Editable;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -37,7 +39,7 @@ public class Editor extends Activity {
         setContentView(R.layout.activity_editor);
 
         // views
-        v_input = findViewById(R.id.editor);
+        v_input = findViewById(R.id.content);
         v_label = findViewById(R.id.label);
         v_extra = findViewById(R.id.description);
 
@@ -65,6 +67,26 @@ public class Editor extends Activity {
             clipboardToInput();
         }
     }
+
+    // ------------------- buttons -------------------
+
+
+    public void onClear(View view) {
+        noListener = true;
+        v_input.setText("");
+        v_label.setText("");
+        noListener = false;
+        inputToClipboard();
+    }
+
+
+    public void onInfo(View view) {
+        new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.app_name))
+                .setMessage(R.string.about)
+                .show();
+    }
+
 
     // ------------------- transfer -------------------
 
