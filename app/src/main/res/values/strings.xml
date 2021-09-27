@@ -1,8 +1,13 @@
 <resources>
     <string name="app_name">Quick Clipboard Widget</string>
+    <string name="about">Made by TrianguloY</string>
+
     <string name="label_label">Label:</string>
     <string name="hint_label">empty</string>
+
     <string name="label_content">Content:</string>
     <string name="hint_content">no text</string>
-    <string name="about">Made by TrianguloY</string>
+    <string name="label_mimetype">Mimetype:</string>
+    <string name="channel_name">Text</string>
+    <string name="channel_description">Clipboard text</string>
 </resources>

@@ -16,6 +16,7 @@
         android:id="@+id/label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:ems="10"
         android:gravity="start|top"
         android:hint="@string/hint_label"
@@ -34,10 +35,13 @@
         android:id="@+id/content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:autoLink="all"
         android:ems="10"
         android:gravity="start|top"
         android:hint="@string/hint_content"
-        android:inputType="textMultiLine" />
+        android:inputType="textMultiLine"
+        android:linksClickable="true" />
 
     <TextView
         android:id="@+id/description"
@@ -49,6 +53,20 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/notification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onNotification"
+            android:src="@android:drawable/ic_popup_reminder" />
+
+        <ImageButton
+            android:id="@+id/share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onShare"
+            android:src="@android:drawable/ic_menu_share" />
 
         <ImageButton
             android:id="@+id/clear"
@@ -63,6 +81,7 @@
             android:layout_height="wrap_content"
             android:onClick="onInfo"
             android:src="@android:drawable/ic_menu_info_details" />
+
     </LinearLayout>
 
 </LinearLayout>

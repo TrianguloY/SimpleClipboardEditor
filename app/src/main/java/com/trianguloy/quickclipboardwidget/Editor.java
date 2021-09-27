@@ -2,9 +2,15 @@ package com.trianguloy.quickclipboardwidget;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.ClipboardManager;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.util.Log;
@@ -14,6 +20,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public class Editor extends Activity {
+    private static final String CHANNEL_ID = "text";
 
     // ------------------- data -------------------
 
@@ -21,12 +28,13 @@ public class Editor extends Activity {
     private ClipboardManager clipboard;
 
     // views
-    private EditText v_input;
+    private EditText v_content;
     private EditText v_label;
     private TextView v_extra;
 
     // internal data
     private boolean noListener = false;
+    private NotificationManager notification;
 
     // ------------------- init -------------------
 
@@ -39,13 +47,18 @@ public class Editor extends Activity {
         setContentView(R.layout.activity_editor);
 
         // views
-        v_input = findViewById(R.id.content);
+        v_content = findViewById(R.id.content);
         v_label = findViewById(R.id.label);
         v_extra = findViewById(R.id.description);
 
         // clipboard
         clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        notification = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         clipboard.addPrimaryClipChangedListener(this::clipboardToInput);
+
+
+        parseIntent(getIntent());
+        setIntent(null);
 
         // inputs
         SimpleTextWatcher watcher = new SimpleTextWatcher() {
@@ -54,10 +67,10 @@ public class Editor extends Activity {
                 inputToClipboard();
             }
         };
-        v_input.addTextChangedListener(watcher);
+        v_content.addTextChangedListener(watcher);
         v_label.addTextChangedListener(watcher);
 
-        v_input.requestFocus();
+        v_content.requestFocus();
     }
 
     @Override
@@ -68,15 +81,32 @@ public class Editor extends Activity {
         }
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        parseIntent(intent);
+    }
+
+    private void parseIntent(Intent intent) {
+        if (intent == null) return;
+        ClipData data = intent.getParcelableExtra(getPackageName());
+        if (data == null) return;
+        clipboard.setPrimaryClip(data);
+    }
+
     // ------------------- buttons -------------------
 
 
     public void onClear(View view) {
-        noListener = true;
-        v_input.setText("");
-        v_label.setText("");
-        noListener = false;
-        inputToClipboard();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            clipboard.clearPrimaryClip();
+        } else {
+            noListener = true;
+            v_content.setText("");
+            v_label.setText("");
+            noListener = false;
+            inputToClipboard();
+        }
     }
 
 
@@ -85,6 +115,59 @@ public class Editor extends Activity {
                 .setTitle(getString(R.string.app_name))
                 .setMessage(R.string.about)
                 .show();
+    }
+
+
+    public void onShare(View view) {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            sendIntent.setClipData(clipboard.getPrimaryClip());
+        }
+        sendIntent.putExtra(Intent.EXTRA_TEXT, v_content.getText());
+        sendIntent.setType("text/plain");
+
+        Intent shareIntent = Intent.createChooser(sendIntent, v_label.getText());
+        startActivity(shareIntent);
+    }
+
+
+    public void onNotification(View view) {
+        Notification.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, getString(R.string.channel_name), NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription(getString(R.string.channel_description));
+            notification.createNotificationChannel(channel);
+
+            builder = new Notification.Builder(this, CHANNEL_ID);
+        } else {
+            builder = new Notification.Builder(this);
+        }
+
+        if (v_label.getText().length() > 0) builder.setContentTitle(v_label.getText());
+        builder.setContentText(v_content.getText());
+        builder.setSmallIcon(R.drawable.ic_notification);
+
+        Intent intent = new Intent(this, Editor.class);
+        intent.putExtra(getPackageName(), clipboard.getPrimaryClip());
+        builder.setContentIntent(PendingIntent.getActivity(this, Long.valueOf(System.currentTimeMillis()).intValue(), intent, PendingIntent.FLAG_UPDATE_CURRENT));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            builder.setStyle(new Notification.BigTextStyle()
+                    .bigText(v_content.getText()));
+        }
+
+
+        NotificationManager notification = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        int id;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            id = notification.getActiveNotifications().length;
+        } else {
+            id = Long.valueOf(System.currentTimeMillis()).intValue();
+        }
+        notification.notify(id,
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN ? builder.build() : builder.getNotification()
+        );
     }
 
 
@@ -101,19 +184,19 @@ public class Editor extends Activity {
         if (primaryClip == null) {
             v_extra.setText("");
             v_label.setText("");
-            v_input.setText("");
+            v_content.setText("");
 
             Log.d("CLIPBOARD", "--> null");
         } else {
             ClipDescription description = primaryClip.getDescription();
 
             // mimetype
-            v_extra.setText("Mimetype: ");
+            v_extra.setText(R.string.label_mimetype);
             boolean empty = true;
             for (int i = 0; i < description.getMimeTypeCount(); i++) {
-                if (!empty) v_extra.append(" - ");
+                if (!empty) v_extra.append(" -");
                 empty = false;
-                v_extra.append(description.getMimeType(i));
+                v_extra.append(" " + description.getMimeType(i));
             }
             if (empty) v_extra.append("[none]");
 
@@ -130,9 +213,9 @@ public class Editor extends Activity {
 
             // text
             String content = toStringNonNull(primaryClip.getItemAt(0).coerceToText(this));
-            if (!toStringNonNull(v_input.getText()).equals(content)) {
-                v_input.setText(content);
-                if (v_input.hasFocus()) v_input.setSelection(v_input.getText().length());
+            if (!toStringNonNull(v_content.getText()).equals(content)) {
+                v_content.setText(content);
+                if (v_content.hasFocus()) v_content.setSelection(v_content.getText().length());
             }
 
 
@@ -148,7 +231,7 @@ public class Editor extends Activity {
         noListener = true;
 
         // get
-        CharSequence content = v_input.getText();
+        CharSequence content = v_content.getText();
         CharSequence label = v_label.getText();
 
         // set
