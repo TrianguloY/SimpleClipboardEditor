@@ -112,6 +112,7 @@ public class Editor extends Activity {
 
     public void onInfo(View view) {
         new AlertDialog.Builder(this)
+                .setIcon(R.mipmap.ic_launcher)
                 .setTitle(getString(R.string.app_name))
                 .setMessage(R.string.about)
                 .show();

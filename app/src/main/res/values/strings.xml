@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">Quick Clipboard Widget</string>
-    <string name="about">Made by TrianguloY</string>
+    <string name="about">"
+Show and edit the clipboard content (and label)
+
+Made by TrianguloY
+"</string>
 
     <string name="label_label">Label:</string>
     <string name="hint_label">empty</string>

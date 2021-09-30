@@ -10,20 +10,20 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/label_label" />
+        android:text="@string/label_label"
+        android:textSize="12sp" />
 
     <EditText
         android:id="@+id/label"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:ems="10"
-        android:gravity="start|top"
         android:hint="@string/hint_label"
-        android:inputType="textMultiLine" />
+        android:inputType="textMultiLine"
+        android:textSize="16sp" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <TextView
@@ -33,12 +33,10 @@
 
     <EditText
         android:id="@+id/content"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:autoLink="all"
-        android:ems="10"
-        android:gravity="start|top"
         android:hint="@string/hint_content"
         android:inputType="textMultiLine"
         android:linksClickable="true" />
@@ -51,7 +49,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <ImageButton
