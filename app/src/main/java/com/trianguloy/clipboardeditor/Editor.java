@@ -1,4 +1,4 @@
-package com.trianguloy.quickclipboardwidget;
+package com.trianguloy.clipboardeditor;
 
 import android.app.Activity;
 import android.app.AlertDialog;

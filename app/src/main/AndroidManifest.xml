@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.trianguloy.quickclipboardwidget">
+    package="com.trianguloy.clipboardeditor">
 
     <application
         android:allowBackup="true"
@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Editor"
+            android:name="com.trianguloy.clipboardeditor.Editor"
             android:windowSoftInputMode="stateVisible"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance">

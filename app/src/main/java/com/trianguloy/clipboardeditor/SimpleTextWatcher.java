@@ -1,4 +1,4 @@
-package com.trianguloy.quickclipboardwidget;
+package com.trianguloy.clipboardeditor;
 
 import android.text.Editable;
 import android.text.TextWatcher;
