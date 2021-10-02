@@ -3,7 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AppData/androidStudio/QuickClipboardWidget/app/src/main/res/drawable-anydpi/ic_notify.xml" value="0.3828125" />
         <entry key="..\:/AppData/androidStudio/QuickClipboardWidget/app/src/main/res/layout/activity_editor.xml" value="0.25" />
+        <entry key="..\:/AppData/androidStudio/QuickClipboardWidget/app/src/main/res/layout/configuration.xml" value="0.14313616071428573" />
       </map>
     </option>
   </component>

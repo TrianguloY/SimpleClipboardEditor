@@ -9,6 +9,7 @@ import android.app.PendingIntent;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,8 +17,11 @@ import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Editor extends Activity {
     private static final String CHANNEL_ID = "text";
@@ -26,6 +30,7 @@ public class Editor extends Activity {
 
     // classes
     private ClipboardManager clipboard;
+    private Preferences prefs;
 
     // views
     private EditText v_content;
@@ -51,14 +56,21 @@ public class Editor extends Activity {
         v_label = findViewById(R.id.label);
         v_extra = findViewById(R.id.description);
 
+        // descriptions
+        for (int viewId : new int[]{R.id.notify, R.id.share, R.id.clear, R.id.configure, R.id.info}) {
+            findViewById(viewId).setOnLongClickListener(view -> {
+                Toast.makeText(Editor.this, view.getContentDescription().toString(), Toast.LENGTH_SHORT).show();
+                return true;
+            });
+        }
+
+        // preferences
+        prefs = new Preferences(getPreferences(MODE_PRIVATE));
+
         // clipboard
         clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
         notification = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         clipboard.addPrimaryClipChangedListener(this::clipboardToInput);
-
-
-        parseIntent(getIntent());
-        setIntent(null);
 
         // inputs
         SimpleTextWatcher watcher = new SimpleTextWatcher() {
@@ -70,7 +82,18 @@ public class Editor extends Activity {
         v_content.addTextChangedListener(watcher);
         v_label.addTextChangedListener(watcher);
 
-        v_content.requestFocus();
+        if (prefs.isShowKeyboard()) {
+            // show keyboard
+            if (v_content.requestFocus()) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(v_content, InputMethodManager.SHOW_IMPLICIT);
+            }
+        }
+
+
+        // intent
+        parseIntent(getIntent());
+        setIntent(null);
     }
 
     @Override
@@ -96,43 +119,6 @@ public class Editor extends Activity {
 
     // ------------------- buttons -------------------
 
-
-    public void onClear(View view) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            clipboard.clearPrimaryClip();
-        } else {
-            noListener = true;
-            v_content.setText("");
-            v_label.setText("");
-            noListener = false;
-            inputToClipboard();
-        }
-    }
-
-
-    public void onInfo(View view) {
-        new AlertDialog.Builder(this)
-                .setIcon(R.mipmap.ic_launcher)
-                .setTitle(getString(R.string.app_name))
-                .setMessage(R.string.about)
-                .show();
-    }
-
-
-    public void onShare(View view) {
-        Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            sendIntent.setClipData(clipboard.getPrimaryClip());
-        }
-        sendIntent.putExtra(Intent.EXTRA_TEXT, v_content.getText());
-        sendIntent.setType("text/plain");
-
-        Intent shareIntent = Intent.createChooser(sendIntent, v_label.getText());
-        startActivity(shareIntent);
-    }
-
-
     public void onNotification(View view) {
         Notification.Builder builder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -151,7 +137,7 @@ public class Editor extends Activity {
 
         Intent intent = new Intent(this, Editor.class);
         intent.putExtra(getPackageName(), clipboard.getPrimaryClip());
-        builder.setContentIntent(PendingIntent.getActivity(this, Long.valueOf(System.currentTimeMillis()).intValue(), intent, PendingIntent.FLAG_UPDATE_CURRENT));
+        builder.setContentIntent(PendingIntent.getActivity(this, getUniqueId(), intent, PendingIntent.FLAG_UPDATE_CURRENT | (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_IMMUTABLE : 0)));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             builder.setStyle(new Notification.BigTextStyle()
@@ -164,11 +150,58 @@ public class Editor extends Activity {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             id = notification.getActiveNotifications().length;
         } else {
-            id = Long.valueOf(System.currentTimeMillis()).intValue();
+            id = getUniqueId();
         }
         notification.notify(id,
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN ? builder.build() : builder.getNotification()
         );
+    }
+
+    public void onShare(View view) {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            sendIntent.setClipData(clipboard.getPrimaryClip());
+        }
+        sendIntent.putExtra(Intent.EXTRA_TEXT, v_content.getText());
+        sendIntent.setType("text/plain");
+
+        Intent shareIntent = Intent.createChooser(sendIntent, v_label.getText());
+        startActivity(shareIntent);
+    }
+
+
+    public void onClear(View view) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            clipboard.clearPrimaryClip();
+        } else {
+            noListener = true;
+            v_content.setText("");
+            v_label.setText("");
+            noListener = false;
+            inputToClipboard();
+        }
+    }
+
+    public void onConfigure(View view) {
+        View content = getLayoutInflater().inflate(R.layout.configuration, null);
+        CheckBox autokeyboard = content.findViewById(R.id.autokeyboard);
+        autokeyboard.setChecked(prefs.isShowKeyboard());
+        autokeyboard.setOnCheckedChangeListener((checkbox, checked) -> prefs.setShowKeyboard(checked));
+        new AlertDialog.Builder(this)
+                .setIcon(R.mipmap.ic_launcher)
+                .setTitle(R.string.app_name)
+                .setView(content)
+                .show();
+    }
+
+
+    public void onInfo(View view) {
+        new AlertDialog.Builder(this)
+                .setIcon(R.mipmap.ic_launcher)
+                .setTitle(getString(R.string.app_name))
+                .setMessage(R.string.about)
+                .show();
     }
 
 
@@ -250,4 +283,7 @@ public class Editor extends Activity {
         else return object.toString();
     }
 
+    private static int getUniqueId() {
+        return Long.valueOf(System.currentTimeMillis()).intValue();
+    }
 }

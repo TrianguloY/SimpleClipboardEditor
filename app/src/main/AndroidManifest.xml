@@ -10,7 +10,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name="com.trianguloy.clipboardeditor.Editor"
-            android:windowSoftInputMode="stateVisible"
+            android:windowSoftInputMode="stateVisible|adjustResize"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance">
             <intent-filter>

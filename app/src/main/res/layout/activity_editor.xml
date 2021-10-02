@@ -20,7 +20,9 @@
         android:layout_weight="1"
         android:hint="@string/hint_label"
         android:inputType="textMultiLine"
-        android:textSize="16sp" />
+        android:minHeight="48dp"
+        android:textSize="16sp"
+        android:importantForAutofill="no" />
 
     <TextView
         android:layout_width="match_parent"
@@ -29,7 +31,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/label_content" />
+        android:text="@string/label_content"
+        android:textSize="16sp" />
 
     <EditText
         android:id="@+id/content"
@@ -38,8 +41,11 @@
         android:layout_weight="1"
         android:autoLink="all"
         android:hint="@string/hint_content"
+        android:importantForAutofill="no"
         android:inputType="textMultiLine"
-        android:linksClickable="true" />
+        android:linksClickable="true"
+        android:minHeight="48dp"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/description"
@@ -53,32 +59,48 @@
         android:orientation="horizontal">
 
         <ImageButton
-            android:id="@+id/notification"
+            android:id="@+id/notify"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/descr_notify"
             android:onClick="onNotification"
-            android:src="@android:drawable/ic_popup_reminder" />
+            android:src="@android:drawable/ic_menu_set_as"
+            tools:ignore="ImageContrastCheck,ImageContrastCheck" />
 
         <ImageButton
             android:id="@+id/share"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/descr_share"
             android:onClick="onShare"
-            android:src="@android:drawable/ic_menu_share" />
+            android:src="@android:drawable/ic_menu_share"
+            tools:ignore="ImageContrastCheck" />
 
         <ImageButton
             android:id="@+id/clear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/descr_clear"
             android:onClick="onClear"
-            android:src="@android:drawable/ic_menu_close_clear_cancel" />
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            tools:ignore="ImageContrastCheck" />
+
+        <ImageButton
+            android:id="@+id/configure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/descr_configure"
+            android:onClick="onConfigure"
+            android:src="@android:drawable/ic_menu_manage"
+            tools:ignore="ImageContrastCheck,ImageContrastCheck,ImageContrastCheck" />
 
         <ImageButton
             android:id="@+id/info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onInfo"
-            android:src="@android:drawable/ic_menu_info_details" />
+            android:src="@android:drawable/ic_menu_info_details"
+            android:contentDescription="@string/descr_info" />
 
     </LinearLayout>
 
