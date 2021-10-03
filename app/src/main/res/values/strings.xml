@@ -1,17 +1,14 @@
 <resources>
     <!-- app -->
     <string name="app_name">Simple Clipboard Editor</string>
-    <string name="about">"
-This app displays the current content of your phone's clipboard.
+    <string name="about">"This app displays the current content of your phone's clipboard.
 When that content is text, you can edit, replace, delete or perform any other text modification, live.
 Additionally, you can also share the content directly and create a notification with it for later use.
 
 Note: Due to Goggle's restrictions the app can't interact with the clipboard while it's closed. It will be automatically updated as soon as you reopen it though. The app doesn't contains any history functionality (not yet at least).
 
 
-
-Made by TrianguloY, free without ads.
-"</string>
+Made by TrianguloY. Extremely small, efficient, without any permissions, free and without ads."</string>
     <string name="blog">Blog</string>
 
     <!-- main -->
@@ -21,7 +18,7 @@ Made by TrianguloY, free without ads.
     <string name="descr_notify">Set as notification</string>
     <string name="descr_share">Share</string>
     <string name="descr_clear">Clear</string>
-    <string name="descr_configure">Configure settings</string>
+    <string name="descr_configure">Settings</string>
     <string name="descr_info">Info</string>
     <string name="txt_empty">empty</string>
     <string name="txt_itemcount">\nItem count = </string>
