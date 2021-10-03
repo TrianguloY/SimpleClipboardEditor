@@ -26,7 +26,6 @@ Made by TrianguloY
 
     <!-- settings -->
     <string name="conf_keyboard">Show keyboard when app opens</string>
-    <string name="toast_noBrowser">No browser available</string>
 
 
 </resources>

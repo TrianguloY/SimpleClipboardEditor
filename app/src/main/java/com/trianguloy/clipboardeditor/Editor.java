@@ -6,7 +6,6 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.ClipboardManager;
@@ -204,10 +203,12 @@ public class Editor extends Activity {
                 .setTitle(getString(R.string.app_name))
                 .setMessage(R.string.about)
                 .setNeutralButton(R.string.blog, (dialog, button) -> {
+                    String blog_url = "https://triangularapps.blogspot.com/";
                     try {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://triangularapps.blogspot.com/")));
-                    } catch (ActivityNotFoundException e) {
-                        Toast.makeText(Editor.this, R.string.toast_noBrowser, Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(blog_url)));
+                    } catch (Exception e) {
+                        // on error, like no browser, set the blog in the clipboard
+                        clipboard.setPrimaryClip(ClipData.newPlainText("TrianguloY", blog_url));
                     }
                 })
                 .show();
