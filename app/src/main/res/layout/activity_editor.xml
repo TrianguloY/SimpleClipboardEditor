@@ -1,107 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="5dp"
     tools:context=".Editor">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/label_label"
-        android:textSize="12sp" />
-
-    <EditText
-        android:id="@+id/label"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="1"
-        android:hint="@string/hint_label"
-        android:inputType="textMultiLine"
-        android:minHeight="48dp"
-        android:textSize="16sp"
-        android:importantForAutofill="no" />
+        android:padding="5dp">
 
-    <TextView
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_label"
+                android:textSize="12sp" />
+
+            <EditText
+                android:id="@+id/label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/txt_empty"
+                android:importantForAutofill="no"
+                android:inputType="textMultiLine"
+                android:minHeight="48dp"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_content"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:autoLink="all"
+                android:hint="@string/txt_empty"
+                android:importantForAutofill="no"
+                android:inputType="textMultiLine"
+                android:linksClickable="true"
+                android:minHeight="48dp"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <ImageView
+        android:id="@+id/imageView2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="2dp"
+        android:src="@android:color/darker_gray" />
 
-    <TextView
+    <HorizontalScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/label_content"
-        android:textSize="16sp" />
+        android:layout_gravity="center"
+        android:padding="5dp">
 
-    <EditText
-        android:id="@+id/content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:autoLink="all"
-        android:hint="@string/hint_content"
-        android:importantForAutofill="no"
-        android:inputType="textMultiLine"
-        android:linksClickable="true"
-        android:minHeight="48dp"
-        android:textSize="20sp" />
-
-    <TextView
-        android:id="@+id/description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <ImageButton
-            android:id="@+id/notify"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/descr_notify"
-            android:onClick="onNotification"
-            android:src="@android:drawable/ic_menu_set_as"
-            tools:ignore="ImageContrastCheck,ImageContrastCheck" />
+            android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/share"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/descr_share"
-            android:onClick="onShare"
-            android:src="@android:drawable/ic_menu_share"
-            tools:ignore="ImageContrastCheck" />
+            <ImageButton
+                android:id="@+id/notify"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/descr_notify"
+                android:onClick="onNotification"
+                android:src="@android:drawable/ic_menu_set_as"
+                tools:ignore="ImageContrastCheck,ImageContrastCheck" />
 
-        <ImageButton
-            android:id="@+id/clear"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/descr_clear"
-            android:onClick="onClear"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
-            tools:ignore="ImageContrastCheck" />
+            <ImageButton
+                android:id="@+id/share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/descr_share"
+                android:onClick="onShare"
+                android:src="@android:drawable/ic_menu_share"
+                tools:ignore="ImageContrastCheck" />
 
-        <ImageButton
-            android:id="@+id/configure"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/descr_configure"
-            android:onClick="onConfigure"
-            android:src="@android:drawable/ic_menu_manage"
-            tools:ignore="ImageContrastCheck,ImageContrastCheck,ImageContrastCheck" />
+            <ImageButton
+                android:id="@+id/clear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/descr_clear"
+                android:onClick="onClear"
+                android:src="@android:drawable/ic_menu_close_clear_cancel"
+                tools:ignore="ImageContrastCheck" />
 
-        <ImageButton
-            android:id="@+id/info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onInfo"
-            android:src="@android:drawable/ic_menu_info_details"
-            android:contentDescription="@string/descr_info" />
+            <ImageButton
+                android:id="@+id/configure"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/descr_configure"
+                android:onClick="onConfigure"
+                android:src="@android:drawable/ic_menu_manage"
+                tools:ignore="ImageContrastCheck,ImageContrastCheck,ImageContrastCheck" />
 
-    </LinearLayout>
+            <ImageButton
+                android:id="@+id/info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/descr_info"
+                android:onClick="onInfo"
+                android:src="@android:drawable/ic_menu_info_details" />
+
+        </LinearLayout>
+    </HorizontalScrollView>
 
 </LinearLayout>

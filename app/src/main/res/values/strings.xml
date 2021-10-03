@@ -6,18 +6,19 @@ Show and edit the clipboard content (and label)
 
 Made by TrianguloY
 "</string>
+    <string name="blog">Blog</string>
 
     <!-- main -->
     <string name="label_label">Label:</string>
-    <string name="hint_label">empty</string>
     <string name="label_content">Content:</string>
-    <string name="hint_content">no text</string>
     <string name="label_mimetype">Mimetype:</string>
     <string name="descr_notify">Set as notification</string>
     <string name="descr_share">Share</string>
     <string name="descr_clear">Clear</string>
     <string name="descr_configure">Configure settings</string>
     <string name="descr_info">Info</string>
+    <string name="txt_empty">empty</string>
+    <string name="txt_itemcount">\nItem count = </string>
 
     <!-- notifications -->
     <string name="channel_name">Text</string>
@@ -25,5 +26,7 @@ Made by TrianguloY
 
     <!-- settings -->
     <string name="conf_keyboard">Show keyboard when app opens</string>
+    <string name="toast_noBrowser">No browser available</string>
+
 
 </resources>

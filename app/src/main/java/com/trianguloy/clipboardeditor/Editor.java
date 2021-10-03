@@ -6,11 +6,13 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -201,6 +203,13 @@ public class Editor extends Activity {
                 .setIcon(R.mipmap.ic_launcher)
                 .setTitle(getString(R.string.app_name))
                 .setMessage(R.string.about)
+                .setNeutralButton(R.string.blog, (dialog, button) -> {
+                    try {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://triangularapps.blogspot.com/")));
+                    } catch (ActivityNotFoundException e) {
+                        Toast.makeText(Editor.this, R.string.toast_noBrowser, Toast.LENGTH_SHORT).show();
+                    }
+                })
                 .show();
     }
 
@@ -216,7 +225,7 @@ public class Editor extends Activity {
 
         // set
         if (primaryClip == null) {
-            v_extra.setText("");
+            v_extra.setText(String.format("[%s]", getString(R.string.txt_empty)));
             v_label.setText("");
             v_content.setText("");
 
@@ -232,11 +241,11 @@ public class Editor extends Activity {
                 empty = false;
                 v_extra.append(" " + description.getMimeType(i));
             }
-            if (empty) v_extra.append("[none]");
+            if (empty) v_extra.append(getString(R.string.txt_empty));
 
             // item count
             int itemCount = primaryClip.getItemCount();
-            if (itemCount > 1) v_extra.append("\nItem count = " + itemCount);
+            if (itemCount > 1) v_extra.append(getString(R.string.txt_itemcount) + itemCount);
 
             // label
             String label = toStringNonNull(description.getLabel());
