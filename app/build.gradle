@@ -6,7 +6,7 @@ android {
     compileSdk 30
 
     defaultConfig {
-        applicationId "com.trianguloy.quickclipboardwidget"
+        applicationId "com.trianguloy.clipboardeditor"
         minSdk 11
         targetSdk 30
         versionCode 1
