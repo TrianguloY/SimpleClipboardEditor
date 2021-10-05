@@ -13,13 +13,20 @@ import android.widget.TextView;
 
 public class Editor extends Activity {
 
+    // ------------------- data -------------------
+
+    // classes
     private ClipboardManager clipboard;
 
+    // views
     private EditText v_input;
     private EditText v_label;
     private TextView v_extra;
 
+    // internal data
     private boolean noListener = false;
+
+    // ------------------- init -------------------
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +55,15 @@ public class Editor extends Activity {
         v_input.addTextChangedListener(watcher);
         v_label.addTextChangedListener(watcher);
 
-
+        v_input.requestFocus();
     }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        if (hasFocus) clipboardToInput();
+        if (hasFocus) {
+            clipboardToInput();
+        }
     }
 
     // ------------------- transfer -------------------
@@ -91,12 +100,18 @@ public class Editor extends Activity {
             if (itemCount > 1) v_extra.append("\nItem count = " + itemCount);
 
             // label
-            CharSequence label = description.getLabel().toString();
-            if (!v_label.getText().toString().equals(label.toString())) v_label.setText(label);
+            String label = toStringNonNull(description.getLabel());
+            if (!toStringNonNull(v_label.getText()).equals(label)) {
+                v_label.setText(label);
+                if (v_label.hasFocus()) v_label.setSelection(v_label.getText().length());
+            }
 
             // text
-            String content = primaryClip.getItemAt(0).coerceToText(this).toString();
-            if (!v_input.getText().toString().equals(content)) v_input.setText(content);
+            String content = toStringNonNull(primaryClip.getItemAt(0).coerceToText(this));
+            if (!toStringNonNull(v_input.getText()).equals(content)) {
+                v_input.setText(content);
+                if (v_input.hasFocus()) v_input.setSelection(v_input.getText().length());
+            }
 
 
             Log.d("CLIPBOARD", "--> [" + label + "] " + content);
@@ -122,7 +137,11 @@ public class Editor extends Activity {
         noListener = false;
     }
 
-    // ------------------- clipboard -------------------
+    // ------------------- utils -------------------
 
+    static private String toStringNonNull(Object object) {
+        if (object == null) return "";
+        else return object.toString();
+    }
 
 }
