@@ -198,20 +198,25 @@ public class Editor extends Activity {
 
 
     public void onInfo(View view) {
-        new AlertDialog.Builder(this)
+        View content = getLayoutInflater().inflate(R.layout.about, null);
+        AlertDialog dialog = new AlertDialog.Builder(this)
                 .setIcon(R.mipmap.ic_launcher)
                 .setTitle(getString(R.string.app_name))
-                .setMessage(R.string.about)
-                .setNeutralButton(R.string.blog, (dialog, button) -> {
-                    String blog_url = "https://triangularapps.blogspot.com/";
-                    try {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(blog_url)));
-                    } catch (Exception e) {
-                        // on error, like no browser, set the blog in the clipboard
-                        clipboard.setPrimaryClip(ClipData.newPlainText("TrianguloY", blog_url));
-                    }
-                })
+                .setView(content)
                 .show();
+
+        for (int id : new int[]{R.id.blog, R.id.github, R.id.playstore}) {
+            View btn = content.findViewById(id);
+            btn.setOnClickListener(b -> {
+                openInBrowser(btn.getTag().toString());
+                dialog.dismiss();
+            });
+            btn.setOnLongClickListener(b -> {
+                setInClipboard(btn.getTag().toString());
+                dialog.dismiss();
+                return true;
+            });
+        }
     }
 
 
@@ -291,6 +296,19 @@ public class Editor extends Activity {
     static private String toStringNonNull(Object object) {
         if (object == null) return "";
         else return object.toString();
+    }
+
+    private void openInBrowser(String url) {
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+        } catch (Exception e) {
+            // on error, like no browser, set the blog in the clipboard
+            setInClipboard(url);
+        }
+    }
+
+    private void setInClipboard(String text) {
+        clipboard.setPrimaryClip(ClipData.newPlainText("TrianguloY", text));
     }
 
     private static int getUniqueId() {
