@@ -164,7 +164,7 @@ public class Editor extends Activity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             sendIntent.setClipData(clipboard.getPrimaryClip());
         }
-        sendIntent.putExtra(Intent.EXTRA_TEXT, v_content.getText());
+        sendIntent.putExtra(Intent.EXTRA_TEXT, v_content.getText().toString());
         sendIntent.setType("text/plain");
 
         Intent shareIntent = Intent.createChooser(sendIntent, v_label.getText());
