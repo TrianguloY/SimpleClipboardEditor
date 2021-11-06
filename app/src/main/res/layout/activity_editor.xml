@@ -80,6 +80,7 @@
 
             <ImageButton
                 android:id="@+id/notify"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/descr_notify"
@@ -89,6 +90,7 @@
 
             <ImageButton
                 android:id="@+id/share"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/descr_share"
@@ -98,6 +100,7 @@
 
             <ImageButton
                 android:id="@+id/clear"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/descr_clear"
@@ -107,6 +110,7 @@
 
             <ImageButton
                 android:id="@+id/configure"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/descr_configure"
@@ -116,6 +120,7 @@
 
             <ImageButton
                 android:id="@+id/info"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/descr_info"
