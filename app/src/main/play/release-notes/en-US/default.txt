@@ -1,0 +1,9 @@
+V 1.2
+- Style update
+
+V 1.1
+- Added Github and Blog links to about screen
+- Fixed sharing
+
+V 1.0
+- Initial release on Play Store
