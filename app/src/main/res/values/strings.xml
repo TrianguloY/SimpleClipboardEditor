@@ -31,6 +31,6 @@ Made by TrianguloY. Extremely small, efficient, without any permissions, free an
 
     <!-- settings -->
     <string name="conf_keyboard">Show keyboard when app opens</string>
-
+    <string name="conf_capitalize">Capitalize first letter of input sentences (some keyboards may ignore this)</string>
 
 </resources>

@@ -33,4 +33,24 @@ public class Preferences {
     public void setShowKeyboard(boolean showKeyboard) {
         prefs.edit().putBoolean(SHOWKEYBOARD_KEY, showKeyboard).apply();
     }
+
+    // ------------------- capitalize sentences -------------------
+
+    private final String CAPITALIZE_KEY = "capitalize";
+    private final boolean CAPITALIZE_DEFAULT = false;
+
+    /**
+     * @return if CAPITALIZE preference is set
+     */
+    public boolean isCapitalize() {
+        return prefs.getBoolean(CAPITALIZE_KEY, CAPITALIZE_DEFAULT);
+    }
+
+
+    /**
+     * @param capitalize new CAPITALIZE preference to set
+     */
+    public void setCapitalize(boolean capitalize) {
+        prefs.edit().putBoolean(CAPITALIZE_KEY, capitalize).apply();
+    }
 }

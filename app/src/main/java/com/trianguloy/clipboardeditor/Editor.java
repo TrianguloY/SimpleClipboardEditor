@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -94,6 +95,8 @@ public class Editor extends Activity {
             }
         }
 
+        // capitalize input state if enabled in settings
+        updateCapitalizeState();
 
         // start intent
         parseIntent(getIntent());
@@ -124,6 +127,21 @@ public class Editor extends Activity {
         ClipData data = intent.getParcelableExtra(getPackageName());
         if (data == null) return;
         clipboard.setPrimaryClip(data);
+    }
+
+    /**
+     * Update
+     */
+    private void updateCapitalizeState() {
+        if (prefs.isCapitalize()) {
+            // set flag
+            v_content.setInputType(v_content.getInputType() | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+            v_label.setInputType(v_label.getInputType() | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+        } else {
+            // remove flag
+            v_content.setInputType(v_content.getInputType() & ~InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+            v_label.setInputType(v_label.getInputType() & ~InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+        }
     }
 
     // ------------------- buttons -------------------
@@ -211,9 +229,17 @@ public class Editor extends Activity {
     public void onConfigure(View view) {
         // setup
         View content = getLayoutInflater().inflate(R.layout.configuration, null);
+
         CheckBox autokeyboard = content.findViewById(R.id.autokeyboard);
         autokeyboard.setChecked(prefs.isShowKeyboard());
         autokeyboard.setOnCheckedChangeListener((checkbox, checked) -> prefs.setShowKeyboard(checked));
+
+        CheckBox capitalize = content.findViewById(R.id.capitalize);
+        capitalize.setChecked(prefs.isCapitalize());
+        capitalize.setOnCheckedChangeListener((checkbox, checked) -> {
+            prefs.setCapitalize(checked);
+            updateCapitalizeState();
+        });
 
         // show
         new AlertDialog.Builder(this)
