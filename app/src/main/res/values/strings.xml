@@ -10,7 +10,8 @@ Note: Due to Google's restrictions the app can't interact with the clipboard whi
 
 Made by TrianguloY. Extremely small, efficient, without any permissions, free and without ads."</string>
     <string name="blog">Blog</string>
-    <string name="github">GitHub</string>
+    <string name="source_code">Source code</string>
+    <string name="play_store">Play Store</string>
 
     <!-- main -->
     <string name="label_label">Label:</string>
@@ -30,7 +31,6 @@ Made by TrianguloY. Extremely small, efficient, without any permissions, free an
 
     <!-- settings -->
     <string name="conf_keyboard">Show keyboard when app opens</string>
-    <string name="play_store">Play Store</string>
 
 
 </resources>

@@ -14,7 +14,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <Button
@@ -24,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:tag="https://github.com/TrianguloY/SimpleClipboardEditor"
-            android:text="@string/github" />
+            android:text="@string/source_code" />
 
         <Button
             android:id="@+id/playstore"

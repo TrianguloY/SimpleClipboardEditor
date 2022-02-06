@@ -218,7 +218,7 @@ public class Editor extends Activity {
         // show
         new AlertDialog.Builder(this)
                 .setIcon(R.mipmap.ic_launcher)
-                .setTitle(R.string.app_name)
+                .setTitle(R.string.descr_configure)
                 .setView(content)
                 .show();
     }
@@ -233,7 +233,7 @@ public class Editor extends Activity {
         // show
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setIcon(R.mipmap.ic_launcher)
-                .setTitle(getString(R.string.app_name))
+                .setTitle(getString(R.string.descr_info))
                 .setView(content)
                 .show();
 
@@ -361,4 +361,5 @@ public class Editor extends Activity {
     private static int getUniqueId() {
         return Long.valueOf(System.currentTimeMillis()).intValue();
     }
+
 }
