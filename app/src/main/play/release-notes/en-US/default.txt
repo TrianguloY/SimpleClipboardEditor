@@ -1,3 +1,7 @@
+V 1.3
+- New setting: Capitalize sentences on input
+- Tweaks to texts and visuals of dialogs
+
 V 1.2
 - Style update
 
