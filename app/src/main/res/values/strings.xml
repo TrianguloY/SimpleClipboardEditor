@@ -2,8 +2,8 @@
     <!-- app -->
     <string name="app_name">Simple Clipboard Editor</string>
     <string name="about">"This app displays the current content of your phone's clipboard.
-When that content is text, you can edit, replace, delete or perform any other text modification, live.
-Additionally, you can also share the content directly and create a notification with it for later use.
+When that content is text you can edit, replace, delete or perform any other text modification, live.
+Additionally, you can also share the content directly or create a notification with it for later use.
 
 Note: Due to Google's restrictions the app can't interact with the clipboard while it's closed. It will be automatically updated as soon as you reopen it though. The app doesn't contains any history functionality (not yet at least).
 

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Simple editor del portapapeles</string>
+    <string name="about">"Esta aplicación muestra el contenido del portapapeles de tu dispositivo.
+Cuando el contenido es texto puedes editarlo, reemplazarlo, borrarlo o realizar cualquier modificación sobre él en vivo.
+Además, puedes compartir el contenido directamente o crear una notificación con él para usar mas tarde.
+
+Nota: Debido a las restricciones de Google la aplicación no puede interactuar con el portapapeles mientras está cerrada pero se sincronizará automáticamente al abrirse. La aplicación no contiene ninguna funcionalidad de historial (al menos no de momento).
+
+
+Hecha por TrianguloY. Extremadamente pequeña, eficiente, sin permisos, gratuita y sin anuncios."</string>
+    <string name="blog">Blog</string>
+    <string name="source_code">Código fuente</string>
+    <string name="play_store">Play Store</string>
+    <string name="label_label">Categoría</string>
+    <string name="label_content">Contenido</string>
+    <string name="label_mimetype">Tipo (mimetype)</string>
+    <string name="descr_notify">Poner como notificación</string>
+    <string name="descr_share">Compartir</string>
+    <string name="descr_clear">Borrar</string>
+    <string name="descr_configure">Ajustes</string>
+    <string name="descr_info">Información</string>
+    <string name="txt_empty">vacío</string>
+    <string name="txt_itemcount">"número de elementos = "</string>
+    <string name="channel_name">Texto</string>
+    <string name="channel_description">Texto del portapapeles</string>
+    <string name="conf_keyboard">Mostrar teclado al abrir la aplicación</string>
+    <string name="conf_capitalize">Poner en mayúsculas la primera letra de cada frase (algunos teclados puede que lo ignoren)</string>
+</resources>
