@@ -69,6 +69,42 @@
         android:contentDescription="@null" />
 
     <HorizontalScrollView
+        android:id="@+id/sync_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="5dp"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/sync_to"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/descr_sync_to"
+                android:onClick="inputToClipboard"
+                android:src="@drawable/sync_to"
+                tools:ignore="ImageContrastCheck,ImageContrastCheck" />
+
+            <ImageButton
+                android:id="@+id/sync_from"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/descr_sync_from"
+                android:onClick="inputFromClipboard"
+                android:src="@drawable/sync_from"
+                tools:ignore="ImageContrastCheck" />
+
+            </LinearLayout>
+    </HorizontalScrollView>
+    <HorizontalScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

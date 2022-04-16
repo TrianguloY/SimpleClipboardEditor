@@ -53,4 +53,24 @@ public class Preferences {
     public void setCapitalize(boolean capitalize) {
         prefs.edit().putBoolean(CAPITALIZE_KEY, capitalize).apply();
     }
+
+    // ------------------- auto sync -------------------
+
+    private final String SYNC_KEY = "sync";
+    private final boolean SYNC_DEFAULT = true;
+
+    /**
+     * @return if SYNC preference is set
+     */
+    public boolean isSync() {
+        return prefs.getBoolean(SYNC_KEY, SYNC_DEFAULT);
+    }
+
+
+    /**
+     * @param sync new SYNC preference to set
+     */
+    public void setSync(boolean sync) {
+        prefs.edit().putBoolean(SYNC_KEY, sync).apply();
+    }
 }

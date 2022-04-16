@@ -46,6 +46,13 @@ public class Editor extends Activity {
     // internal data
     private boolean noListener = false; // to avoid firing clipboardToInput and inputToClipboard recursively
 
+    private final SimpleTextWatcher watcher = new SimpleTextWatcher() {
+        @Override
+        public void afterTextChanged(Editable s) {
+            inputToClipboard();
+        }
+    };
+
     // ------------------- init -------------------
 
     @Override
@@ -62,7 +69,7 @@ public class Editor extends Activity {
         v_extra = findViewById(R.id.description);
 
         // descriptions
-        for (int viewId : new int[]{R.id.notify, R.id.share, R.id.clear, R.id.configure, R.id.info}) {
+        for (int viewId : new int[]{R.id.notify, R.id.share, R.id.clear, R.id.configure, R.id.info, R.id.sync_to, R.id.sync_from}) {
             findViewById(viewId).setOnLongClickListener(view -> {
                 Toast.makeText(Editor.this, view.getContentDescription().toString(), Toast.LENGTH_SHORT).show();
                 return true;
@@ -75,17 +82,9 @@ public class Editor extends Activity {
         // clipboard
         clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
         notification = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        clipboard.addPrimaryClipChangedListener(this::clipboardToInput);
 
-        // inputs
-        SimpleTextWatcher watcher = new SimpleTextWatcher() {
-            @Override
-            public void afterTextChanged(Editable s) {
-                inputToClipboard();
-            }
-        };
-        v_content.addTextChangedListener(watcher);
-        v_label.addTextChangedListener(watcher);
+        // sync if enabled in settings
+        updateSyncState();
 
         // show keyboard if enabled in settings
         if (prefs.isShowKeyboard()) {
@@ -107,7 +106,7 @@ public class Editor extends Activity {
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         // when windows is focused, update clipboard
-        if (hasFocus) {
+        if (hasFocus && prefs.isSync()) {
             clipboardToInput();
         }
     }
@@ -126,7 +125,13 @@ public class Editor extends Activity {
         if (intent == null) return;
         ClipData data = intent.getParcelableExtra(getPackageName());
         if (data == null) return;
-        clipboard.setPrimaryClip(data);
+        if (prefs.isSync()) {
+            // set directly, it will autosync
+            clipboard.setPrimaryClip(data);
+        } else {
+            // set manually
+            clipToInput(data);
+        }
     }
 
     /**
@@ -142,6 +147,34 @@ public class Editor extends Activity {
             v_content.setInputType(v_content.getInputType() & ~InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
             v_label.setInputType(v_label.getInputType() & ~InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         }
+    }
+
+    /**
+     * Updates the sync state
+     */
+    private void updateSyncState() {
+        if (prefs.isSync()) {
+            // enable clipboard to input
+            clipboard.addPrimaryClipChangedListener(this::clipboardToInput);
+
+            // enable input to clipboard
+            v_content.addTextChangedListener(watcher);
+            v_label.addTextChangedListener(watcher);
+
+            // hide buttons
+            findViewById(R.id.sync_parent).setVisibility(View.GONE);
+        } else {
+            // disable clipboard to input
+            clipboard.removePrimaryClipChangedListener(this::clipboardToInput);
+
+            // disable input to clipboard
+            v_content.removeTextChangedListener(watcher);
+            v_label.removeTextChangedListener(watcher);
+
+            // show buttons
+            findViewById(R.id.sync_parent).setVisibility(View.VISIBLE);
+        }
+
     }
 
     // ------------------- buttons -------------------
@@ -176,7 +209,7 @@ public class Editor extends Activity {
 
         // sets the intent for when you click the notification. It will open the app with the current clipboard content
         Intent intent = new Intent(this, Editor.class);
-        intent.putExtra(getPackageName(), clipboard.getPrimaryClip());
+        intent.putExtra(getPackageName(), inputAsPrimaryClip());
         builder.setContentIntent(PendingIntent.getActivity(this, getUniqueId(), intent, PendingIntent.FLAG_UPDATE_CURRENT | (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_IMMUTABLE : 0))); // change the requestCode with an unique id for multiple independent pendingIntents
 
 
@@ -199,7 +232,7 @@ public class Editor extends Activity {
         sendIntent.setType("text/plain");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             // not sure what it does, but maybe it allows to share images (even if the app can't display them)
-            sendIntent.setClipData(clipboard.getPrimaryClip());
+            sendIntent.setClipData(inputAsPrimaryClip());
         }
 
         // start a chooser, use the label as title
@@ -211,15 +244,24 @@ public class Editor extends Activity {
      */
     public void onClear(View view) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            // the easy way, just call 'clear'
-            clipboard.clearPrimaryClip();
+            if (prefs.isSync()) {
+                // the easy way, just call 'clear'
+                clipboard.clearPrimaryClip();
+            } else {
+                // clear input only
+                v_content.setText("");
+                v_label.setText("");
+            }
         } else {
             // the not-so-easy way, manually set as empty
             noListener = true;
             v_content.setText("");
             v_label.setText("");
             noListener = false;
-            inputToClipboard();
+            if (prefs.isSync()) {
+                // and sync
+                inputToClipboard();
+            }
         }
     }
 
@@ -230,15 +272,25 @@ public class Editor extends Activity {
         // setup
         View content = getLayoutInflater().inflate(R.layout.configuration, null);
 
+        // auto keyboard
         CheckBox autokeyboard = content.findViewById(R.id.autokeyboard);
         autokeyboard.setChecked(prefs.isShowKeyboard());
         autokeyboard.setOnCheckedChangeListener((checkbox, checked) -> prefs.setShowKeyboard(checked));
 
+        // capitalize
         CheckBox capitalize = content.findViewById(R.id.capitalize);
         capitalize.setChecked(prefs.isCapitalize());
         capitalize.setOnCheckedChangeListener((checkbox, checked) -> {
             prefs.setCapitalize(checked);
             updateCapitalizeState();
+        });
+
+        // autosync
+        CheckBox sync = content.findViewById(R.id.sync);
+        sync.setChecked(prefs.isSync());
+        sync.setOnCheckedChangeListener((checkbox, checked) -> {
+            prefs.setSync(checked);
+            updateSyncState();
         });
 
         // show
@@ -287,6 +339,20 @@ public class Editor extends Activity {
         }
     }
 
+    /**
+     * @see this#clipboardToInput
+     */
+    public void inputFromClipboard(View view) {
+        clipboardToInput();
+    }
+
+    /**
+     * @see this#inputToClipboard()
+     */
+    public void inputToClipboard(View view) {
+        inputToClipboard();
+    }
+
 
     // ------------------- transfer -------------------
 
@@ -299,10 +365,15 @@ public class Editor extends Activity {
         noListener = true;
 
         // get
-        ClipData primaryClip = clipboard.getPrimaryClip();
+        clipToInput(clipboard.getPrimaryClip());
+    }
 
+    /**
+     * Sets the inputs to the values of the clipdata
+     */
+    private void clipToInput(ClipData clip) {
         // set
-        if (primaryClip == null) {
+        if (clip == null) {
             // no content
             v_extra.setText(String.format("[%s]", getString(R.string.txt_empty)));
             v_label.setText("");
@@ -311,7 +382,7 @@ public class Editor extends Activity {
             Log.d("CLIPBOARD", "--> null");
         } else {
             // content
-            ClipDescription description = primaryClip.getDescription();
+            ClipDescription description = clip.getDescription();
 
             // mimetype
             v_extra.setText(R.string.label_mimetype);
@@ -324,7 +395,7 @@ public class Editor extends Activity {
             if (empty) v_extra.append(getString(R.string.txt_empty));
 
             // item count
-            int itemCount = primaryClip.getItemCount();
+            int itemCount = clip.getItemCount();
             if (itemCount > 1) v_extra.append(getString(R.string.txt_itemcount) + itemCount);
 
             // label
@@ -335,7 +406,7 @@ public class Editor extends Activity {
             }
 
             // text
-            String content = toStringNonNull(primaryClip.getItemAt(0).coerceToText(this));
+            String content = toStringNonNull(clip.getItemAt(0).coerceToText(this));
             if (!toStringNonNull(v_content.getText()).equals(content)) {
                 v_content.setText(content);
                 if (v_content.hasFocus()) v_content.setSelection(v_content.getText().length());
@@ -367,6 +438,16 @@ public class Editor extends Activity {
         Log.d("CLIPBOARD", "<-- [" + label + "] " + content);
 
         noListener = false;
+    }
+
+    /**
+     * Returns the input as primary clip
+     * in sync mode, the clipboard one is returned (may contain more data)
+     */
+    private ClipData inputAsPrimaryClip() {
+        return prefs.isSync()
+                ? clipboard.getPrimaryClip()
+                : ClipData.newPlainText(v_label.getText().toString(), v_content.getText().toString());
     }
 
     // ------------------- utils -------------------

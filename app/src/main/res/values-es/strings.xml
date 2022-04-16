@@ -26,4 +26,9 @@ Hecha por TrianguloY. Extremadamente pequeña, eficiente, sin permisos, gratuita
     <string name="channel_description">Texto del portapapeles</string>
     <string name="conf_keyboard">Mostrar teclado al abrir la aplicación</string>
     <string name="conf_capitalize">Poner en mayúsculas la primera letra de cada frase (algunos teclados puede que lo ignoren)</string>
+    <string name="descr_sync_to">Reemplaza el valor del portapapeles con el texto introducido</string>
+    <string name="descr_sync_from">Reemplaza el texto introducido con el valor del portapapeles</string>
+    <string name="conf_sync">Sincronizar automáticamente el contenido del portapapeles con los textos introducidos</string>
+    <string name="shortcut_clear">Borrar portapapeles</string>
+    <string name="toast_cleared">Portapapeles borrado</string>
 </resources>

@@ -22,6 +22,8 @@ Made by TrianguloY. Extremely small, efficient, without any permissions, free an
     <string name="descr_clear">Clear</string>
     <string name="descr_configure">Settings</string>
     <string name="descr_info">Info</string>
+    <string name="descr_sync_to">Replace the clipboard data with the inputs value</string>
+    <string name="descr_sync_from">Replace the inputs value with the clipboard data</string>
     <string name="txt_empty">empty</string>
     <string name="txt_itemcount">\nItem count = </string>
 
@@ -32,6 +34,7 @@ Made by TrianguloY. Extremely small, efficient, without any permissions, free an
     <!-- settings -->
     <string name="conf_keyboard">Show keyboard when app opens</string>
     <string name="conf_capitalize">Capitalize first letter of input sentences (some keyboards may ignore this)</string>
+    <string name="conf_sync">Automatic sync between clipboard and inputs</string>
 
     <!-- shortcuts -->
     <string name="shortcut_clear">Clear clipboard</string>
