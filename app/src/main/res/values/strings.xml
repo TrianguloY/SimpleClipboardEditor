@@ -33,4 +33,8 @@ Made by TrianguloY. Extremely small, efficient, without any permissions, free an
     <string name="conf_keyboard">Show keyboard when app opens</string>
     <string name="conf_capitalize">Capitalize first letter of input sentences (some keyboards may ignore this)</string>
 
+    <!-- shortcuts -->
+    <string name="shortcut_clear">Clear clipboard</string>
+    <string name="toast_cleared">Clipboard cleared</string>
+
 </resources>

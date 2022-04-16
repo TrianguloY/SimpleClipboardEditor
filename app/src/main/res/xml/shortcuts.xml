@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+  <shortcut
+      android:enabled="true"
+      android:icon="@android:drawable/ic_menu_close_clear_cancel"
+      android:shortcutId="clear"
+      android:shortcutLongLabel="@string/shortcut_clear"
+      android:shortcutShortLabel="@string/descr_clear">
+    <intent
+        android:action="android.intent.action.VIEW"
+        android:targetClass="com.trianguloy.clipboardeditor.Shortcuts"
+        android:targetPackage="com.trianguloy.clipboardeditor" />
+  </shortcut>
+</shortcuts>
