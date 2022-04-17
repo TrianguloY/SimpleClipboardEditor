@@ -9,8 +9,8 @@ android {
         applicationId "com.trianguloy.clipboardeditor"
         minSdk 11
         targetSdk 30
-        versionCode 4
-        versionName "1.3" // play store had 1.2.1, f-droid had 1.3, for new version use 1.4 (so that 1.2.1 in play store is ignored)
+        versionCode 5
+        versionName "1.4"
     }
 
     buildTypes {

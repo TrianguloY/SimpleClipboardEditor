@@ -1,3 +1,10 @@
+V 1.4
+- New shortcut to clear the clipboard directly without opening the app
+- Setting to disable automatic sync
+- New translation to Portuguese (Brazil) thanks to mezysinc!
+- New translation to Spanish
+- Fix launcher icon not shown in older android versions
+
 V 1.3
 - New setting: Capitalize sentences on input
 - Tweaks to texts and visuals of dialogs

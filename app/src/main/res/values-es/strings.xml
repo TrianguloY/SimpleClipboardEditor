@@ -21,7 +21,7 @@ Hecha por TrianguloY. Extremadamente pequeña, eficiente, sin permisos, gratuita
     <string name="descr_configure">Ajustes</string>
     <string name="descr_info">Información</string>
     <string name="txt_empty">vacío</string>
-    <string name="txt_itemcount">"número de elementos = "</string>
+    <string name="txt_itemcount">\nnúmero de elementos = </string>
     <string name="channel_name">Texto</string>
     <string name="channel_description">Texto del portapapeles</string>
     <string name="conf_keyboard">Mostrar teclado al abrir la aplicación</string>
