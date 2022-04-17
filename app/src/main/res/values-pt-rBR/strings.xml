@@ -9,7 +9,7 @@ Além disso, também pode imediatamente compartilhar o conteúdo e colocar ele c
 Aviso: Devido às restrições do Google, o app não pode interagir com o clipboard enquanto estiver fechado. No entanto, será automaticamente atualizado assim que for reaberto. O app não possui a funcionalidade de histórico de entradas (pelo menos por enquanto).
 
 
-Feito por TrianguloY, traduzido por Mezysinc. Extremamente pequeno, eficiente, sem nenhuma permissão, gratuito e sem anúncios."</string>
+Feito por TrianguloY, traduzido por mezysinc. Extremamente pequeno, eficiente, sem nenhuma permissão, gratuito e sem anúncios."</string>
     <string name="blog">Blog</string>
     <string name="source_code">Código-fonte</string>
     <string name="play_store">Play Store</string>
@@ -23,8 +23,10 @@ Feito por TrianguloY, traduzido por Mezysinc. Extremamente pequeno, eficiente, s
     <string name="descr_clear">Limpar</string>
     <string name="descr_configure">Configurações</string>
     <string name="descr_info">Detalhes</string>
+    <string name="descr_sync_to">Substitui conteúdo do clipboard por texto digitado</string>
+    <string name="descr_sync_from">Substitui o texto digitado por conteúdo do clipboard</string>
     <string name="txt_empty">inexistente</string>
-    <string name="txt_itemcount">\nContagem de itens = </string>
+    <string name="txt_itemcount">\nnúmero de itens = </string>
 
     <!-- notifications -->
     <string name="channel_name">Texto</string>
@@ -33,5 +35,10 @@ Feito por TrianguloY, traduzido por Mezysinc. Extremamente pequeno, eficiente, s
     <!-- settings -->
     <string name="conf_keyboard">Mostrar teclado quando o app for aberto</string>
     <string name="conf_capitalize">Colocar a primeira letra em maiúscula em frases de entrada (alguns teclados podem ignorar isso)</string>
+    <string name="conf_sync">Sincronização automática entre o clipboard e as entradas</string>
+
+    <!-- shortcuts -->
+    <string name="shortcut_clear">Limpar clipboard</string>
+    <string name="toast_cleared">O conteúdo do clipboard foi removido</string>
 
 </resources>
