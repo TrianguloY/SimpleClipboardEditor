@@ -3,6 +3,7 @@ plugins {
 }
 
 android {
+    namespace 'com.trianguloy.clipboardeditor'
     compileSdk 30
 
     defaultConfig {
