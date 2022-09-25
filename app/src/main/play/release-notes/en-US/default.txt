@@ -1,3 +1,7 @@
+V 1.5
+- Sent text to the app
+- Edit selected text (Android 6.0+)
+
 V 1.4
 - New shortcut to clear the clipboard directly without opening the app
 - Setting to disable automatic sync
