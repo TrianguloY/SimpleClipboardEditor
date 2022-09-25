@@ -86,6 +86,16 @@ public class Editor extends Activity {
         // sync if enabled in settings
         updateSyncState();
 
+        // auto-update result
+        v_content.addTextChangedListener(new SimpleTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                Intent intent = new Intent();
+                intent.putExtra(getPackageName(), inputAsPrimaryClip());
+                setResult(RESULT_OK, intent);
+            }
+        });
+
         // show keyboard if enabled in settings
         if (prefs.isShowKeyboard()) {
             if (v_content.requestFocus()) {

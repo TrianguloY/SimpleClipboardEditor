@@ -40,4 +40,8 @@ Made by TrianguloY. Extremely small, efficient, without any permissions, free an
     <string name="shortcut_clear">Clear clipboard</string>
     <string name="toast_cleared">Clipboard cleared</string>
 
+    <!-- process -->
+    <string name="process">Clipboard editor</string>
+    <string name="clip_selection">selection</string>
+
 </resources>

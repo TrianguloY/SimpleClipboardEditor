@@ -31,4 +31,5 @@ Hecha por TrianguloY. Extremadamente pequeña, eficiente, sin permisos, gratuita
     <string name="conf_sync">Sincronizar automáticamente el contenido del portapapeles con los textos introducidos</string>
     <string name="shortcut_clear">Borrar portapapeles</string>
     <string name="toast_cleared">Portapapeles borrado</string>
+    <string name="process">Editor del portapapels</string>
 </resources>
