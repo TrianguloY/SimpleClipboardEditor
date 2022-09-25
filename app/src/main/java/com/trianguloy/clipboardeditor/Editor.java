@@ -123,7 +123,7 @@ public class Editor extends Activity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        // on new intent (probably from a notification) load it
+        // on new intent (probably from a notification or from a sent text) load it
         parseIntent(intent);
     }
 
@@ -132,14 +132,24 @@ public class Editor extends Activity {
      */
     private void parseIntent(Intent intent) {
         if (intent == null) return;
-        ClipData data = intent.getParcelableExtra(getPackageName());
-        if (data == null) return;
-        if (prefs.isSync()) {
-            // set directly, it will autosync
-            clipboard.setPrimaryClip(data);
-        } else {
-            // set manually
-            clipToInput(data);
+        ClipData data = null;
+
+        // set by ourselves
+        if (intent.hasExtra(getPackageName()))
+            data = intent.getParcelableExtra(getPackageName());
+        // sent
+        if (data == null && intent.hasExtra(Intent.EXTRA_TEXT))
+            data = ClipData.newPlainText(getString(R.string.clip_sent), intent.getStringExtra(Intent.EXTRA_TEXT));
+
+        // set
+        if (data != null) {
+            if (prefs.isSync()) {
+                // set directly, it will autosync
+                clipboard.setPrimaryClip(data);
+            } else {
+                // set manually
+                clipToInput(data);
+            }
         }
     }
 
