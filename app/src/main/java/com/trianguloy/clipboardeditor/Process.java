@@ -19,13 +19,13 @@ public class Process extends Activity {
         super.onCreate(savedInstanceState);
 
         // get the text
-        ClipData clipData = ClipData.newPlainText(
+        var clipData = ClipData.newPlainText(
                 getString(R.string.clip_selection),
                 getIntent().getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT)
         );
 
         // process the text
-        Intent intent = new Intent(this, Editor.class);
+        var intent = new Intent(this, Editor.class);
         intent.putExtra(getPackageName(), clipData);
         startActivityForResult(intent, 0);
     }
@@ -35,11 +35,11 @@ public class Process extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
 
         // get the result
-        ClipData clipData = data == null ? null : data.getParcelableExtra(getPackageName());
-        CharSequence result = clipData == null ? "" : clipData.getItemAt(0).coerceToText(this);
+        var clipData = data == null ? null : data.<ClipData>getParcelableExtra(getPackageName());
+        var result = clipData == null ? "" : clipData.getItemAt(0).coerceToText(this);
 
         // return it (we ignore the readonly attribute, it's unnecessary)
-        Intent intent = new Intent();
+        var intent = new Intent();
         intent.putExtra(Intent.EXTRA_PROCESS_TEXT, result);
         setResult(RESULT_OK, intent);
         finish();

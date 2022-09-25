@@ -7,7 +7,6 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ClipData;
-import android.content.ClipDescription;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
@@ -69,7 +68,7 @@ public class Editor extends Activity {
         v_extra = findViewById(R.id.description);
 
         // descriptions
-        for (int viewId : new int[]{R.id.notify, R.id.share, R.id.clear, R.id.configure, R.id.info, R.id.sync_to, R.id.sync_from}) {
+        for (var viewId : new int[]{R.id.notify, R.id.share, R.id.clear, R.id.configure, R.id.info, R.id.sync_to, R.id.sync_from}) {
             findViewById(viewId).setOnLongClickListener(view -> {
                 Toast.makeText(Editor.this, view.getContentDescription().toString(), Toast.LENGTH_SHORT).show();
                 return true;
@@ -90,7 +89,7 @@ public class Editor extends Activity {
         v_content.addTextChangedListener(new SimpleTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                Intent intent = new Intent();
+                var intent = new Intent();
                 intent.putExtra(getPackageName(), inputAsPrimaryClip());
                 setResult(RESULT_OK, intent);
             }
@@ -99,7 +98,7 @@ public class Editor extends Activity {
         // show keyboard if enabled in settings
         if (prefs.isShowKeyboard()) {
             if (v_content.requestFocus()) {
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                var imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(v_content, InputMethodManager.SHOW_IMPLICIT);
             }
         }
@@ -196,7 +195,7 @@ public class Editor extends Activity {
         Notification.Builder builder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // setup a notification channel in Oreo+
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, getString(R.string.channel_name), NotificationManager.IMPORTANCE_DEFAULT);
+            var channel = new NotificationChannel(CHANNEL_ID, getString(R.string.channel_name), NotificationManager.IMPORTANCE_DEFAULT);
             channel.setDescription(getString(R.string.channel_description));
             notification.createNotificationChannel(channel);
 
@@ -218,14 +217,14 @@ public class Editor extends Activity {
         }
 
         // sets the intent for when you click the notification. It will open the app with the current clipboard content
-        Intent intent = new Intent(this, Editor.class);
+        var intent = new Intent(this, Editor.class);
         intent.putExtra(getPackageName(), inputAsPrimaryClip());
         builder.setContentIntent(PendingIntent.getActivity(this, getUniqueId(), intent, PendingIntent.FLAG_UPDATE_CURRENT | (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_IMMUTABLE : 0))); // change the requestCode with an unique id for multiple independent pendingIntents
 
 
         // publish the notification
-        NotificationManager notification = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        int id = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? notification.getActiveNotifications().length : getUniqueId(); // ensure unique id
+        var notification = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        var id = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? notification.getActiveNotifications().length : getUniqueId(); // ensure unique id
         notification.notify(id,
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN ? builder.build() : builder.getNotification()
         );
@@ -236,7 +235,7 @@ public class Editor extends Activity {
      */
     public void onShare(View view) {
         // create a SEND text intent with the clipboard content
-        Intent sendIntent = new Intent();
+        var sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_TEXT, v_content.getText().toString());
         sendIntent.setType("text/plain");
@@ -280,7 +279,7 @@ public class Editor extends Activity {
      */
     public void onConfigure(View view) {
         // setup
-        View content = getLayoutInflater().inflate(R.layout.configuration, null);
+        var content = getLayoutInflater().inflate(R.layout.configuration, null);
 
         // auto keyboard
         CheckBox autokeyboard = content.findViewById(R.id.autokeyboard);
@@ -316,22 +315,22 @@ public class Editor extends Activity {
      */
     public void onInfo(View view) {
         // before-setup
-        View content = getLayoutInflater().inflate(R.layout.about, null);
+        var content = getLayoutInflater().inflate(R.layout.about, null);
 
         // show
-        AlertDialog dialog = new AlertDialog.Builder(this)
+        var dialog = new AlertDialog.Builder(this)
                 .setIcon(R.mipmap.ic_launcher)
                 .setTitle(getString(R.string.descr_info))
                 .setView(content)
                 .show();
 
         // after-setup
-        for (int id : new int[]{R.id.blog, R.id.github, R.id.playstore}) {
+        for (var id : new int[]{R.id.blog, R.id.github, R.id.playstore}) {
             // setup all three buttons (its tag is the url)
-            View button = content.findViewById(id);
+            var button = content.findViewById(id);
             button.setOnClickListener(btn -> {
                 // click to open in browser
-                String url = btn.getTag().toString();
+                var url = btn.getTag().toString();
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
                 } catch (Exception e) {
@@ -392,12 +391,12 @@ public class Editor extends Activity {
             Log.d("CLIPBOARD", "--> null");
         } else {
             // content
-            ClipDescription description = clip.getDescription();
+            var description = clip.getDescription();
 
             // mimetype
             v_extra.setText(R.string.label_mimetype);
-            boolean empty = true;
-            for (int i = 0; i < description.getMimeTypeCount(); i++) {
+            var empty = true;
+            for (var i = 0; i < description.getMimeTypeCount(); i++) {
                 if (!empty) v_extra.append(" -");
                 empty = false;
                 v_extra.append(" " + description.getMimeType(i));
@@ -405,18 +404,18 @@ public class Editor extends Activity {
             if (empty) v_extra.append(getString(R.string.txt_empty));
 
             // item count
-            int itemCount = clip.getItemCount();
+            var itemCount = clip.getItemCount();
             if (itemCount > 1) v_extra.append(getString(R.string.txt_itemcount) + itemCount);
 
             // label
-            String label = toStringNonNull(description.getLabel());
+            var label = toStringNonNull(description.getLabel());
             if (!toStringNonNull(v_label.getText()).equals(label)) {
                 v_label.setText(label);
                 if (v_label.hasFocus()) v_label.setSelection(v_label.getText().length());
             }
 
             // text
-            String content = toStringNonNull(clip.getItemAt(0).coerceToText(this));
+            var content = toStringNonNull(clip.getItemAt(0).coerceToText(this));
             if (!toStringNonNull(v_content.getText()).equals(content)) {
                 v_content.setText(content);
                 if (v_content.hasFocus()) v_content.setSelection(v_content.getText().length());

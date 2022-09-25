@@ -16,7 +16,7 @@ public class Shortcuts extends Activity {
         super.onCreate(savedInstanceState);
 
         // get
-        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        var clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
 
         // clear
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
