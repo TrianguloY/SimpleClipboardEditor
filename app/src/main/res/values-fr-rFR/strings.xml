@@ -43,6 +43,6 @@ Réalisé par TrianguloY. Extrêmement léger, efficace, sans aucune autorisatio
 
     <!-- process -->
     <string name="process">Éditeur de presse-papiers</string>
-    <string name="clip_selection">sélection</string>
+    <string name="clip_selection">Sélection</string>
 
 </resources>
