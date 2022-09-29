@@ -1,0 +1,24 @@
+V1.5
+- Envoyé du texte à l'application
+- Éditer le texte sélectionné (Android 6.0+)
+
+V1.4
+- Nouveau raccourci pour effacer le presse-papiers directement sans ouvrir l'application
+- Nouveau paramètre: désactiver la synchronisation automatique
+- Nouvelle traduction en portugais (Brésil) grâce à mezysinc !
+- Nouvelle traduction en espagnol
+- Correction de l'icône non affichée dans les anciennes versions d'Android
+
+v1.3
+- Nouveau paramètre: capitaliser les phrases lors de la saisie
+- Ajustements des textes et des visuels des boîtes de dialogue
+
+V1.2
+- Mise à jour des styles
+
+V1.1
+- Ajout de liens vers Github et Blog dans l'écran "À Propos"
+- Partage fixe
+
+V1.0
+- Première version sur Play Store
