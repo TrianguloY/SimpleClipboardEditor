@@ -1,0 +1,8 @@
+Cette application affiche le contenu actuel du presse-papiers de votre téléphone.
+Lorsque ce contenu est du texte, vous pouvez le modifier, remplacer, supprimer ou effectuer toute autre modification, en direct.
+De plus, vous pouvez également partager se contenu directement et créer une notification avec lui pour une utilisation ultérieure.
+
+Remarque: En raison des restrictions de Google, l'application ne peut pas interagir avec le presse-papiers lorsqu'il est fermé. Cependant, il sera automatiquement mis à jour dès que vous le rouvrirez. L'application ne contient aucune fonctionnalité d'historique (du moins pas encore).
+
+
+Réalisé par TrianguloY. Léger, efficace, sans aucune autorisation, gratuit et sans publicité.
