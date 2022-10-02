@@ -1,0 +1,48 @@
+<resources>
+    <!-- app -->
+    <string name="app_name">Simple Clipboard Editor</string>
+    <string name="about">"Cette application affiche le contenu actuel du presse-papiers de votre téléphone.
+Lorsque ce contenu est du texte, vous pouvez modifier, remplacer, supprimer ou effectuer toute autre modification de texte, en direct.
+En outre, vous pouvez également partager le contenu directement ou créer une notification avec celui-ci pour une utilisation ultérieure.
+
+Remarque : En raison des restrictions de Google, l'application ne peut pas interagir avec le presse-papiers lorsqu'il est fermé. Cependant, il sera automatiquement mis à jour dès que vous le rouvrirez. L'application ne contient aucune fonctionnalité d'historique (du moins pas encore).
+
+
+Réalisé par TrianguloY. Extrêmement léger, efficace, sans aucune autorisation, gratuit et sans publicité."</string>
+    <string name="blog">Blog</string>
+    <string name="source_code">Code source</string>
+    <string name="play_store">Play Store</string>
+
+    <!-- main -->
+    <string name="label_label">Label:</string>
+    <string name="label_content">Contenu:</string>
+    <string name="label_mimetype">Mimetype:</string>
+    <string name="descr_notify">Définir en tant que notification</string>
+    <string name="descr_share">Partager</string>
+    <string name="descr_clear">Effacer</string>
+    <string name="descr_configure">Paramètres</string>
+    <string name="descr_info">Info</string>
+    <string name="descr_sync_to">Remplacer les données du presse-papiers par la valeur d\'entrée</string>
+    <string name="descr_sync_from">Remplacer la valeur d\'entrée par les données du presse-papiers</string>
+    <string name="txt_empty">Vierge</string>
+    <string name="txt_itemcount">\nNombre d\'éléments = </string>
+    <string name="clip_sent">envoyer</string>
+
+    <!-- notifications -->
+    <string name="channel_name">Texte</string>
+    <string name="channel_description">Texte du presse-papiers</string>
+
+    <!-- settings -->
+    <string name="conf_keyboard">"Faire apparaître le clavier à l'ouverture de l'application"</string>
+    <string name="conf_capitalize">Capitaliser la première lettre des phrases saisies (certains claviers peuvent ignorer cela)</string>
+    <string name="conf_sync">Synchronisation automatique entre presse-papiers et entrées</string>
+
+    <!-- shortcuts -->
+    <string name="shortcut_clear">Effacer le presse-papier</string>
+    <string name="toast_cleared">Presse-papiers effacé</string>
+
+    <!-- process -->
+    <string name="process">Éditeur de presse-papiers</string>
+    <string name="clip_selection">Sélection</string>
+
+</resources>
