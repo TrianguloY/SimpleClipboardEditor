@@ -6,3 +6,6 @@ Note: Due to Google's restrictions the app can't interact with the clipboard whi
 
 
 Made by TrianguloY. Extremely small, efficient, without any permissions, free and without ads.
+
+GitHub: https://github.com/TrianguloY/SimpleClipboardEditor
+Blog: https://triangularapps.blogspot.com/
