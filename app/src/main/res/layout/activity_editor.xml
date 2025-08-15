@@ -122,7 +122,7 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/descr_notify"
                 android:onClick="onNotification"
-                android:src="@android:drawable/ic_menu_set_as"
+                android:src="@drawable/notification"
                 tools:ignore="ImageContrastCheck,ImageContrastCheck" />
 
             <ImageButton
@@ -132,7 +132,7 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/descr_share"
                 android:onClick="onShare"
-                android:src="@android:drawable/ic_menu_share"
+                android:src="@drawable/share"
                 tools:ignore="ImageContrastCheck" />
 
             <ImageButton
@@ -142,7 +142,7 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/descr_clear"
                 android:onClick="onClear"
-                android:src="@android:drawable/ic_menu_close_clear_cancel"
+                android:src="@drawable/delete"
                 tools:ignore="ImageContrastCheck" />
 
             <ImageButton
@@ -152,7 +152,7 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/descr_configure"
                 android:onClick="onConfigure"
-                android:src="@android:drawable/ic_menu_manage"
+                android:src="@drawable/settings"
                 tools:ignore="ImageContrastCheck,ImageContrastCheck,ImageContrastCheck" />
 
             <ImageButton
@@ -162,7 +162,7 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/descr_info"
                 android:onClick="onInfo"
-                android:src="@android:drawable/ic_menu_info_details" />
+                android:src="@drawable/info" />
 
         </LinearLayout>
     </HorizontalScrollView>
