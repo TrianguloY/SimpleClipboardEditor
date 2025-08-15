@@ -16,6 +16,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.InputType;
 import android.util.Log;
@@ -23,9 +25,14 @@ import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 /**
  * The main activity, a clipboard editor
@@ -48,11 +55,23 @@ public class Editor extends Activity {
 
     // internal data
     private boolean noListener = false; // to avoid firing clipboardToInput and inputToClipboard recursively
+    private int delayedId = Integer.MIN_VALUE; // to manage the delayed timeout
 
     private final SimpleTextWatcher watcher = new SimpleTextWatcher() {
         @Override
         public void afterTextChanged(Editable s) {
-            inputToClipboard();
+            if (prefs.getDelay() <= 0) {
+                // no delay
+                inputToClipboard();
+            } else {
+                // delay
+                var ourDelayed = ++delayedId;
+                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                    if (delayedId == ourDelayed) {
+                        inputToClipboard();
+                    }
+                }, prefs.getDelay());
+            }
         }
     };
 
@@ -333,6 +352,22 @@ public class Editor extends Activity {
         sync.setOnCheckedChangeListener((checkbox, checked) -> {
             prefs.setSync(checked);
             updateSyncState();
+        });
+
+        // delay
+        var delay = content.<SeekBar>findViewById(R.id.delay);
+        var delayTxt = content.<TextView>findViewById(R.id.delayTxt);
+        var doubleFormatterToAvoidExtraZeros = new DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH)); // https://stackoverflow.com/a/25308216
+        doubleFormatterToAvoidExtraZeros.setMaximumFractionDigits(340); //340 = DecimalFormat.DOUBLE_FRACTION_DIGITS
+        delay.setProgress(prefs.getDelay() / 250);
+        delayTxt.setText(getString(R.string.conf_delay_s, doubleFormatterToAvoidExtraZeros.format(prefs.getDelay() / 1000.0)));
+        delay.setOnSeekBarChangeListener(new SimpleOnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                var delay = progress * 250;
+                prefs.setDelay(delay);
+                delayTxt.setText(getString(R.string.conf_delay_s, doubleFormatterToAvoidExtraZeros.format(delay / 1000.0)));
+            }
         });
 
         // show

@@ -37,6 +37,8 @@ Made by TrianguloY. Extremely small, efficient, without any permissions, free an
     <string name="conf_keyboard">Show keyboard when app opens</string>
     <string name="conf_capitalize">Capitalize first letter of input sentences (some keyboards may ignore this)</string>
     <string name="conf_sync">Automatic sync between clipboard and inputs</string>
+    <string name="conf_delay">Sync after input delay</string>
+    <string name="conf_delay_s">%ss</string>
 
     <!-- shortcuts -->
     <string name="shortcut_clear">Clear clipboard</string>

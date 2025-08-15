@@ -73,4 +73,24 @@ public class Preferences {
     public void setSync(boolean sync) {
         prefs.edit().putBoolean(SYNC_KEY, sync).apply();
     }
+
+    // ------------------- delay input -------------------
+
+    private final String DELAY_KEY = "delay"; // in milliseconds
+    private final int DELAY_DEFAULT = 1000;
+
+    /**
+     * @return if DELAY preference is set
+     */
+    public int getDelay() {
+        return prefs.getInt(DELAY_KEY, DELAY_DEFAULT);
+    }
+
+
+    /**
+     * @param delay new DELAY preference to set
+     */
+    public void setDelay(int delay) {
+        prefs.edit().putInt(DELAY_KEY, delay).apply();
+    }
 }
