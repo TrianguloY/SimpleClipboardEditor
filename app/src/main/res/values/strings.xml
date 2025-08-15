@@ -27,6 +27,7 @@ Made by TrianguloY. Extremely small, efficient, without any permissions, free an
     <string name="txt_empty">empty</string>
     <string name="txt_itemcount">\nItem count = </string>
     <string name="clip_sent">sent</string>
+    <string name="statistics">lines: %d , words: %d , chars: %s</string>
 
     <!-- notifications -->
     <string name="channel_name">Text</string>
@@ -39,6 +40,7 @@ Made by TrianguloY. Extremely small, efficient, without any permissions, free an
     <string name="conf_sync">Automatic sync between clipboard and inputs</string>
     <string name="conf_delay">Sync after input delay</string>
     <string name="conf_delay_s">%ss</string>
+    <string name="conf_statistics">Show content statistics</string>
 
     <!-- shortcuts -->
     <string name="shortcut_clear">Clear clipboard</string>

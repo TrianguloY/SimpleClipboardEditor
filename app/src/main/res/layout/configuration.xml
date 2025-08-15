@@ -54,4 +54,11 @@
             android:text="@string/conf_delay_s"
             android:textAppearance="@android:style/TextAppearance" />
     </LinearLayout>
+
+    <Switch
+        android:id="@+id/statistics"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:text="@string/conf_statistics" />
 </LinearLayout>

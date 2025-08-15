@@ -1,6 +1,8 @@
 package com.trianguloy.clipboardeditor;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 import android.Manifest;
 import android.app.Activity;
@@ -53,6 +55,8 @@ public class Editor extends Activity {
     private EditText v_label; // label input
     private TextView v_extra; // extra text
 
+    private TextView v_statistics; // statistics text
+
     // internal data
     private boolean noListener = false; // to avoid firing clipboardToInput and inputToClipboard recursively
     private int delayedId = Integer.MIN_VALUE; // to manage the delayed timeout
@@ -60,6 +64,7 @@ public class Editor extends Activity {
     private final SimpleTextWatcher watcher = new SimpleTextWatcher() {
         @Override
         public void afterTextChanged(Editable s) {
+            if (noListener) return;
             if (prefs.getDelay() <= 0) {
                 // no delay
                 inputToClipboard();
@@ -89,6 +94,7 @@ public class Editor extends Activity {
         v_content = findViewById(R.id.content);
         v_label = findViewById(R.id.label);
         v_extra = findViewById(R.id.description);
+        v_statistics = findViewById(R.id.statistics);
 
         // descriptions
         for (var viewId : new int[]{R.id.notify, R.id.share, R.id.clear, R.id.configure, R.id.info, R.id.sync_to, R.id.sync_from}) {
@@ -104,6 +110,16 @@ public class Editor extends Activity {
         // clipboard
         clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
         notification = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+        // statistics
+        v_content.addTextChangedListener(new SimpleTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                computeStatistics(s);
+            }
+        });
+        computeStatistics(v_content.getText());
+        v_statistics.setVisibility(prefs.enabledStatistics() ? VISIBLE : GONE);
 
         // sync if enabled in settings
         updateSyncState();
@@ -204,7 +220,7 @@ public class Editor extends Activity {
             v_label.addTextChangedListener(watcher);
 
             // hide buttons
-            findViewById(R.id.sync_parent).setVisibility(View.GONE);
+            findViewById(R.id.sync_parent).setVisibility(GONE);
         } else {
             // disable clipboard to input
             clipboard.removePrimaryClipChangedListener(this::clipboardToInput);
@@ -214,7 +230,7 @@ public class Editor extends Activity {
             v_label.removeTextChangedListener(watcher);
 
             // show buttons
-            findViewById(R.id.sync_parent).setVisibility(View.VISIBLE);
+            findViewById(R.id.sync_parent).setVisibility(VISIBLE);
         }
 
     }
@@ -334,12 +350,12 @@ public class Editor extends Activity {
         var content = getLayoutInflater().inflate(R.layout.configuration, null);
 
         // auto keyboard
-        Switch autokeyboard = content.findViewById(R.id.autokeyboard);
+        var autokeyboard = content.<Switch>findViewById(R.id.autokeyboard);
         autokeyboard.setChecked(prefs.isShowKeyboard());
         autokeyboard.setOnCheckedChangeListener((checkbox, checked) -> prefs.setShowKeyboard(checked));
 
         // capitalize
-        Switch capitalize = content.findViewById(R.id.capitalize);
+        var capitalize = content.<Switch>findViewById(R.id.capitalize);
         capitalize.setChecked(prefs.isCapitalize());
         capitalize.setOnCheckedChangeListener((checkbox, checked) -> {
             prefs.setCapitalize(checked);
@@ -347,7 +363,7 @@ public class Editor extends Activity {
         });
 
         // autosync
-        Switch sync = content.findViewById(R.id.sync);
+        var sync = content.<Switch>findViewById(R.id.sync);
         sync.setChecked(prefs.isSync());
         sync.setOnCheckedChangeListener((checkbox, checked) -> {
             prefs.setSync(checked);
@@ -368,6 +384,15 @@ public class Editor extends Activity {
                 prefs.setDelay(delay);
                 delayTxt.setText(getString(R.string.conf_delay_s, doubleFormatterToAvoidExtraZeros.format(delay / 1000.0)));
             }
+        });
+
+        // statistics
+        var statistics = content.<Switch>findViewById(R.id.statistics);
+        statistics.setChecked(prefs.enabledStatistics());
+        statistics.setOnCheckedChangeListener((checkbox, checked) -> {
+            prefs.setStatistics(checked);
+            if (checked) computeStatistics(v_content.getEditableText());
+            v_statistics.setVisibility(checked ? VISIBLE : GONE);
         });
 
         // show
@@ -526,6 +551,20 @@ public class Editor extends Activity {
                 ? clipboard.getPrimaryClip()
                 : ClipData.newPlainText(v_label.getText().toString(), v_content.getText().toString());
     }
+
+    /** Computes and diplays statistics about the textview content */
+    private void computeStatistics(Editable editable) {
+        if (prefs.enabledStatistics()) {
+            var string = editable.toString();
+            var trimmed = string.trim();
+            v_statistics.setText(getString(R.string.statistics,
+                    /*lines*/ string.isEmpty() ? 0 : string.split("\\n", -1).length,
+                    /*words*/ trimmed.isEmpty() ? 0 : trimmed.split("\\s+").length,
+                    /*length*/ editable.length() == string.length() ? Integer.toString(string.length()) : string.length() + "(" + editable.length() + ")"
+            ));
+        }
+    }
+
 
     // ------------------- utils -------------------
 

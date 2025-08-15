@@ -93,4 +93,26 @@ public class Preferences {
     public void setDelay(int delay) {
         prefs.edit().putInt(DELAY_KEY, delay).apply();
     }
+
+
+    // ------------------- statistics -------------------
+
+    private final String STATISTICS_KEY = "statistics";
+    private final boolean STATISTICS_DEFAULT = true;
+
+    /**
+     * @return if STATISTICS preference is set
+     */
+    public boolean enabledStatistics() {
+        return prefs.getBoolean(STATISTICS_KEY, STATISTICS_DEFAULT);
+    }
+
+
+    /**
+     * @param statistics new STATISTICS preference to set
+     */
+    public void setStatistics(boolean statistics) {
+        prefs.edit().putBoolean(STATISTICS_KEY, statistics).apply();
+    }
+
 }
