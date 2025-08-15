@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace 'com.trianguloy.clipboardeditor'
-    compileSdk 32
+    compileSdkVersion 35
 
     defaultConfig {
         applicationId "com.trianguloy.clipboardeditor"
         minSdk 11
-        targetSdk 32
+        targetSdkVersion 35
         versionCode 6
         versionName "1.5"
     }
