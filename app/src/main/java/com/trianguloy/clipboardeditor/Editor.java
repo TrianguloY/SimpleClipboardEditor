@@ -1,5 +1,8 @@
 package com.trianguloy.clipboardeditor;
 
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Notification;
@@ -29,6 +32,7 @@ import android.widget.Toast;
  */
 public class Editor extends Activity {
     private static final String CHANNEL_ID = "text"; // id for the channel for notifications
+    private static final int NOTIFICATIONS_REQUEST_CODE = 1;
 
     // ------------------- data -------------------
 
@@ -201,7 +205,14 @@ public class Editor extends Activity {
     /**
      * Shows a notification with the clipboard content
      */
-    public void onNotification(View view) {
+    public void onNotification(View ignored) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !notification.areNotificationsEnabled()) {
+            // request notifications permission
+            requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, NOTIFICATIONS_REQUEST_CODE);
+            return;
+        }
+
         Notification.Builder builder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // setup a notification channel in Oreo+
@@ -238,6 +249,18 @@ public class Editor extends Activity {
         notification.notify(id,
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN ? builder.build() : builder.getNotification()
         );
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == NOTIFICATIONS_REQUEST_CODE) {
+            if (grantResults.length >= 1 && grantResults[0] == PERMISSION_GRANTED) {
+                onNotification(null);
+            }
+            Toast.makeText(this, R.string.noPermission, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     /**

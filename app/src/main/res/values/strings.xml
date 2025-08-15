@@ -31,6 +31,7 @@ Made by TrianguloY. Extremely small, efficient, without any permissions, free an
     <!-- notifications -->
     <string name="channel_name">Text</string>
     <string name="channel_description">Clipboard text</string>
+    <string name="noPermission">Permission not granted</string>
 
     <!-- settings -->
     <string name="conf_keyboard">Show keyboard when app opens</string>
