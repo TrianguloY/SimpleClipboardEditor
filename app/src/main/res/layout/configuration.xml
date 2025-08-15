@@ -5,21 +5,21 @@
     android:orientation="vertical"
     android:padding="10dp">
 
-    <CheckBox
+    <Switch
         android:id="@+id/autokeyboard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="48dp"
         android:text="@string/conf_keyboard" />
 
-    <CheckBox
+    <Switch
         android:id="@+id/capitalize"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="48dp"
         android:text="@string/conf_capitalize" />
 
-    <CheckBox
+    <Switch
         android:id="@+id/sync"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

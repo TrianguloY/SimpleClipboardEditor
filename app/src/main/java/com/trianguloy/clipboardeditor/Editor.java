@@ -22,8 +22,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -315,12 +315,12 @@ public class Editor extends Activity {
         var content = getLayoutInflater().inflate(R.layout.configuration, null);
 
         // auto keyboard
-        CheckBox autokeyboard = content.findViewById(R.id.autokeyboard);
+        Switch autokeyboard = content.findViewById(R.id.autokeyboard);
         autokeyboard.setChecked(prefs.isShowKeyboard());
         autokeyboard.setOnCheckedChangeListener((checkbox, checked) -> prefs.setShowKeyboard(checked));
 
         // capitalize
-        CheckBox capitalize = content.findViewById(R.id.capitalize);
+        Switch capitalize = content.findViewById(R.id.capitalize);
         capitalize.setChecked(prefs.isCapitalize());
         capitalize.setOnCheckedChangeListener((checkbox, checked) -> {
             prefs.setCapitalize(checked);
@@ -328,7 +328,7 @@ public class Editor extends Activity {
         });
 
         // autosync
-        CheckBox sync = content.findViewById(R.id.sync);
+        Switch sync = content.findViewById(R.id.sync);
         sync.setChecked(prefs.isSync());
         sync.setOnCheckedChangeListener((checkbox, checked) -> {
             prefs.setSync(checked);
