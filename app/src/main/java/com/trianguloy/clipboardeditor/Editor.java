@@ -244,7 +244,7 @@ public class Editor extends Activity {
         }
 
         // sets the label as notification title (if any), the content and icon
-        if (v_label.getText().length() > 0) builder.setContentTitle(v_label.getText());
+        if (!v_label.getText().isEmpty()) builder.setContentTitle(v_label.getText());
         builder.setContentText(v_content.getText());
         builder.setSmallIcon(R.drawable.ic_notification);
 
