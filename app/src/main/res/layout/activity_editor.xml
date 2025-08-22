@@ -62,32 +62,21 @@
     </ScrollView>
 
     <ImageView
-        android:id="@+id/imageView2"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:src="@android:color/darker_gray"
-        android:contentDescription="@null" />
-
-    <TextView
-        android:id="@+id/statistics"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="end|right"
-        android:padding="5dp"
-        android:text="@string/statistics" />
+        android:contentDescription="@null"
+        android:src="@android:color/darker_gray" />
 
     <HorizontalScrollView
-        android:id="@+id/sync_parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:padding="5dp"
-        android:visibility="gone"
-        tools:visibility="visible">
+        android:padding="5dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <ImageButton
@@ -110,7 +99,15 @@
                 android:src="@drawable/sync_from"
                 tools:ignore="ImageContrastCheck" />
 
-            </LinearLayout>
+            <TextView
+                android:id="@+id/statistics"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end|right"
+                android:padding="5dp"
+                android:text="@string/statistics" />
+
+        </LinearLayout>
     </HorizontalScrollView>
     <HorizontalScrollView
         android:layout_width="wrap_content"

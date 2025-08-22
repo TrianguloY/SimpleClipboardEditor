@@ -1,118 +1,61 @@
 package com.trianguloy.clipboardeditor;
 
+import static com.trianguloy.clipboardeditor.Preferences.Pref.SYNC_BTN_IC;
+import static com.trianguloy.clipboardeditor.Preferences.Pref.SYNC_EXTERNAL;
+import static com.trianguloy.clipboardeditor.Preferences.Pref.SYNC_PAUSE;
+import static com.trianguloy.clipboardeditor.Preferences.Pref.SYNC_START;
+
 import android.content.SharedPreferences;
 
-/**
- * Simple Preferences wrapper
- */
+/** Simple Preferences wrapper */
 public class Preferences {
     private final SharedPreferences prefs; // the prefs
 
-    /**
-     * @param prefs preferences to wrap
-     */
+    /** @param prefs preferences to wrap */
     public Preferences(SharedPreferences prefs) {
         this.prefs = prefs;
+
+        // migrations
+        if (prefs.contains("sync")) {
+            if (!prefs.getBoolean("sync", true)) {
+                // sync = false -> toggle appropriate
+                set(SYNC_START, false);
+                set(SYNC_BTN_IC, true);
+                set(SYNC_EXTERNAL, false);
+                set(SYNC_BTN_IC, true);
+                set(SYNC_PAUSE, false);
+            }
+            prefs.edit().remove("sync").apply();
+        }
     }
 
-    // ------------------- autoshowkeyboard -------------------
-    private final String SHOWKEYBOARD_KEY = "showKeyboard";
-    private final boolean SHOWKEYBOARD_DEFAULT = true;
+    public enum Pref {
+        SHOW_KEYBOARD("showKeyboard", true),
+        CAPITALIZE("capitalize", false),
+        STATISTICS("statistics", true),
+        SYNC_START("syncStart", true),
+        SYNC_BTN_CI("syncBtnCi", false),
+        SYNC_EXTERNAL("syncExternal", true),
+        SYNC_INPUT("syncInput", false),
+        SYNC_BTN_IC("syncBtnIC", false),
+        SYNC_PAUSE("syncPause", true),
+        ;
 
-    /**
-     * @return if SHOWKEYBOARD preference is set
-     */
-    public boolean isShowKeyboard() {
-        return prefs.getBoolean(SHOWKEYBOARD_KEY, SHOWKEYBOARD_DEFAULT);
+        private final String key;
+        private final boolean defaultValue;
+
+        Pref(String key, boolean defaultValue) {
+            this.key = key;
+            this.defaultValue = defaultValue;
+        }
     }
 
-
-    /**
-     * @param showKeyboard new SHOWKEYBOARD preference to set
-     */
-    public void setShowKeyboard(boolean showKeyboard) {
-        prefs.edit().putBoolean(SHOWKEYBOARD_KEY, showKeyboard).apply();
+    public boolean is(Pref pref) {
+        return prefs.getBoolean(pref.key, pref.defaultValue);
     }
 
-    // ------------------- capitalize sentences -------------------
-
-    private final String CAPITALIZE_KEY = "capitalize";
-    private final boolean CAPITALIZE_DEFAULT = false;
-
-    /**
-     * @return if CAPITALIZE preference is set
-     */
-    public boolean isCapitalize() {
-        return prefs.getBoolean(CAPITALIZE_KEY, CAPITALIZE_DEFAULT);
-    }
-
-
-    /**
-     * @param capitalize new CAPITALIZE preference to set
-     */
-    public void setCapitalize(boolean capitalize) {
-        prefs.edit().putBoolean(CAPITALIZE_KEY, capitalize).apply();
-    }
-
-    // ------------------- auto sync -------------------
-
-    private final String SYNC_KEY = "sync";
-    private final boolean SYNC_DEFAULT = true;
-
-    /**
-     * @return if SYNC preference is set
-     */
-    public boolean isSync() {
-        return prefs.getBoolean(SYNC_KEY, SYNC_DEFAULT);
-    }
-
-
-    /**
-     * @param sync new SYNC preference to set
-     */
-    public void setSync(boolean sync) {
-        prefs.edit().putBoolean(SYNC_KEY, sync).apply();
-    }
-
-    // ------------------- delay input -------------------
-
-    private final String DELAY_KEY = "delay"; // in milliseconds
-    private final int DELAY_DEFAULT = 1000;
-
-    /**
-     * @return if DELAY preference is set
-     */
-    public int getDelay() {
-        return prefs.getInt(DELAY_KEY, DELAY_DEFAULT);
-    }
-
-
-    /**
-     * @param delay new DELAY preference to set
-     */
-    public void setDelay(int delay) {
-        prefs.edit().putInt(DELAY_KEY, delay).apply();
-    }
-
-
-    // ------------------- statistics -------------------
-
-    private final String STATISTICS_KEY = "statistics";
-    private final boolean STATISTICS_DEFAULT = true;
-
-    /**
-     * @return if STATISTICS preference is set
-     */
-    public boolean enabledStatistics() {
-        return prefs.getBoolean(STATISTICS_KEY, STATISTICS_DEFAULT);
-    }
-
-
-    /**
-     * @param statistics new STATISTICS preference to set
-     */
-    public void setStatistics(boolean statistics) {
-        prefs.edit().putBoolean(STATISTICS_KEY, statistics).apply();
+    public void set(Pref pref, boolean value) {
+        prefs.edit().putBoolean(pref.key, value).apply();
     }
 
 }

@@ -3,6 +3,15 @@ package com.trianguloy.clipboardeditor;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static com.trianguloy.clipboardeditor.Preferences.Pref.CAPITALIZE;
+import static com.trianguloy.clipboardeditor.Preferences.Pref.SHOW_KEYBOARD;
+import static com.trianguloy.clipboardeditor.Preferences.Pref.STATISTICS;
+import static com.trianguloy.clipboardeditor.Preferences.Pref.SYNC_BTN_CI;
+import static com.trianguloy.clipboardeditor.Preferences.Pref.SYNC_BTN_IC;
+import static com.trianguloy.clipboardeditor.Preferences.Pref.SYNC_EXTERNAL;
+import static com.trianguloy.clipboardeditor.Preferences.Pref.SYNC_INPUT;
+import static com.trianguloy.clipboardeditor.Preferences.Pref.SYNC_PAUSE;
+import static com.trianguloy.clipboardeditor.Preferences.Pref.SYNC_START;
 
 import android.Manifest;
 import android.app.Activity;
@@ -18,8 +27,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.Editable;
 import android.text.InputType;
 import android.util.Log;
@@ -27,14 +34,11 @@ import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.Locale;
+import java.util.List;
 
 /**
  * The main activity, a clipboard editor
@@ -59,26 +63,7 @@ public class Editor extends Activity {
 
     // internal data
     private boolean noListener = false; // to avoid firing clipboardToInput and inputToClipboard recursively
-    private int delayedId = Integer.MIN_VALUE; // to manage the delayed timeout
-
-    private final SimpleTextWatcher watcher = new SimpleTextWatcher() {
-        @Override
-        public void afterTextChanged(Editable s) {
-            if (noListener) return;
-            if (prefs.getDelay() <= 0) {
-                // no delay
-                inputToClipboard();
-            } else {
-                // delay
-                var ourDelayed = ++delayedId;
-                new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                    if (delayedId == ourDelayed) {
-                        inputToClipboard();
-                    }
-                }, prefs.getDelay());
-            }
-        }
-    };
+    private boolean syncOnHasFocus = true; // to run when app starts only once
 
     // ------------------- init -------------------
 
@@ -119,10 +104,31 @@ public class Editor extends Activity {
             }
         });
         computeStatistics(v_content.getText());
-        v_statistics.setVisibility(prefs.enabledStatistics() ? VISIBLE : GONE);
+        v_statistics.setVisibility(prefs.is(STATISTICS) ? VISIBLE : GONE);
 
-        // sync if enabled in settings
-        updateSyncState();
+        // enable clipboard to input
+        clipboard.addPrimaryClipChangedListener(() -> {
+            if (prefs.is(SYNC_EXTERNAL)) {
+                clipboardToInput();
+            }
+        });
+
+        // enable input to clipboard
+        var watcher = new SimpleTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (prefs.is(SYNC_INPUT)) {
+                    // sync on input
+                    inputToClipboard();
+                }
+            }
+        };
+        v_content.addTextChangedListener(watcher);
+        v_label.addTextChangedListener(watcher);
+
+        // manual buttons
+        findViewById(R.id.sync_to).setVisibility(prefs.is(SYNC_BTN_IC) ? VISIBLE : GONE);
+        findViewById(R.id.sync_from).setVisibility(prefs.is(SYNC_BTN_CI) ? VISIBLE : GONE);
 
         // auto-update result
         v_content.addTextChangedListener(new SimpleTextWatcher() {
@@ -135,15 +141,15 @@ public class Editor extends Activity {
         });
 
         // show keyboard if enabled in settings
-        if (prefs.isShowKeyboard()) {
+        if (prefs.is(SHOW_KEYBOARD)) {
             if (v_content.requestFocus()) {
-                var imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(v_content, InputMethodManager.SHOW_IMPLICIT);
+                ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
+                        .showSoftInput(v_content, InputMethodManager.SHOW_IMPLICIT);
             }
         }
 
         // capitalize input state if enabled in settings
-        updateCapitalizeState();
+        setCapitalizeState(prefs.is(CAPITALIZE));
 
         // start intent
         parseIntent(getIntent());
@@ -153,9 +159,18 @@ public class Editor extends Activity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        // when windows is focused, update clipboard
-        if (hasFocus && prefs.isSync()) {
-            clipboardToInput();
+        if (hasFocus) {
+            if (syncOnHasFocus) {
+                syncOnHasFocus = false;
+
+                // when windows is focused, update clipboard
+                // this is the moment the clipboard is available after the app starts
+                if (prefs.is(SYNC_START)) {
+                    clipboardToInput();
+                }
+            }
+        } else {
+            if (prefs.is(SYNC_PAUSE)) inputToClipboard();
         }
     }
 
@@ -182,21 +197,16 @@ public class Editor extends Activity {
 
         // set
         if (data != null) {
-            if (prefs.isSync()) {
-                // set directly, it will autosync
-                clipboard.setPrimaryClip(data);
-            } else {
-                // set manually
-                clipToInput(data);
-            }
+            clipToInput(data);
+            syncOnHasFocus = false;
         }
     }
 
     /**
      * Update
      */
-    private void updateCapitalizeState() {
-        if (prefs.isCapitalize()) {
+    private void setCapitalizeState(boolean state) {
+        if (state) {
             // set flag
             v_content.setInputType(v_content.getInputType() | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
             v_label.setInputType(v_label.getInputType() | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
@@ -205,34 +215,6 @@ public class Editor extends Activity {
             v_content.setInputType(v_content.getInputType() & ~InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
             v_label.setInputType(v_label.getInputType() & ~InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         }
-    }
-
-    /**
-     * Updates the sync state
-     */
-    private void updateSyncState() {
-        if (prefs.isSync()) {
-            // enable clipboard to input
-            clipboard.addPrimaryClipChangedListener(this::clipboardToInput);
-
-            // enable input to clipboard
-            v_content.addTextChangedListener(watcher);
-            v_label.addTextChangedListener(watcher);
-
-            // hide buttons
-            findViewById(R.id.sync_parent).setVisibility(GONE);
-        } else {
-            // disable clipboard to input
-            clipboard.removePrimaryClipChangedListener(this::clipboardToInput);
-
-            // disable input to clipboard
-            v_content.removeTextChangedListener(watcher);
-            v_label.removeTextChangedListener(watcher);
-
-            // show buttons
-            findViewById(R.id.sync_parent).setVisibility(VISIBLE);
-        }
-
     }
 
     // ------------------- buttons -------------------
@@ -320,26 +302,8 @@ public class Editor extends Activity {
      * Clears the clipboard content
      */
     public void onClear(View view) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            if (prefs.isSync()) {
-                // the easy way, just call 'clear'
-                clipboard.clearPrimaryClip();
-            } else {
-                // clear input only
-                v_content.setText("");
-                v_label.setText("");
-            }
-        } else {
-            // the not-so-easy way, manually set as empty
-            noListener = true;
-            v_content.setText("");
-            v_label.setText("");
-            noListener = false;
-            if (prefs.isSync()) {
-                // and sync
-                inputToClipboard();
-            }
-        }
+        v_content.setText("");
+        v_label.setText("");
     }
 
     /**
@@ -349,51 +313,27 @@ public class Editor extends Activity {
         // setup
         var content = getLayoutInflater().inflate(R.layout.configuration, null);
 
-        // auto keyboard
-        var autokeyboard = content.<Switch>findViewById(R.id.autokeyboard);
-        autokeyboard.setChecked(prefs.isShowKeyboard());
-        autokeyboard.setOnCheckedChangeListener((checkbox, checked) -> prefs.setShowKeyboard(checked));
-
-        // capitalize
-        var capitalize = content.<Switch>findViewById(R.id.capitalize);
-        capitalize.setChecked(prefs.isCapitalize());
-        capitalize.setOnCheckedChangeListener((checkbox, checked) -> {
-            prefs.setCapitalize(checked);
-            updateCapitalizeState();
-        });
-
-        // autosync
-        var sync = content.<Switch>findViewById(R.id.sync);
-        sync.setChecked(prefs.isSync());
-        sync.setOnCheckedChangeListener((checkbox, checked) -> {
-            prefs.setSync(checked);
-            updateSyncState();
-        });
-
-        // delay
-        var delay = content.<SeekBar>findViewById(R.id.delay);
-        var delayTxt = content.<TextView>findViewById(R.id.delayTxt);
-        var doubleFormatterToAvoidExtraZeros = new DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH)); // https://stackoverflow.com/a/25308216
-        doubleFormatterToAvoidExtraZeros.setMaximumFractionDigits(340); //340 = DecimalFormat.DOUBLE_FRACTION_DIGITS
-        delay.setProgress(prefs.getDelay() / 250);
-        delayTxt.setText(getString(R.string.conf_delay_s, doubleFormatterToAvoidExtraZeros.format(prefs.getDelay() / 1000.0)));
-        delay.setOnSeekBarChangeListener(new SimpleOnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                var delay = progress * 250;
-                prefs.setDelay(delay);
-                delayTxt.setText(getString(R.string.conf_delay_s, doubleFormatterToAvoidExtraZeros.format(delay / 1000.0)));
-            }
-        });
-
-        // statistics
-        var statistics = content.<Switch>findViewById(R.id.statistics);
-        statistics.setChecked(prefs.enabledStatistics());
-        statistics.setOnCheckedChangeListener((checkbox, checked) -> {
-            prefs.setStatistics(checked);
-            if (checked) computeStatistics(v_content.getEditableText());
-            v_statistics.setVisibility(checked ? VISIBLE : GONE);
-        });
+        for (var preferenceSwitch : List.of(
+                new PreferenceSwitch(SHOW_KEYBOARD, R.id.autokeyboard, null),
+                new PreferenceSwitch(CAPITALIZE, R.id.capitalize, this::setCapitalizeState),
+                new PreferenceSwitch(STATISTICS, R.id.statistics, checked -> {
+                    if (checked) computeStatistics(v_content.getEditableText());
+                    v_statistics.setVisibility(checked ? VISIBLE : GONE);
+                }),
+                new PreferenceSwitch(SYNC_START, R.id.sync_start, null),
+                new PreferenceSwitch(SYNC_BTN_CI, R.id.sync_btn_ci, checked -> findViewById(R.id.sync_from).setVisibility(checked ? VISIBLE : GONE)),
+                new PreferenceSwitch(SYNC_EXTERNAL, R.id.sync_external, null),
+                new PreferenceSwitch(SYNC_INPUT, R.id.sync_input, null),
+                new PreferenceSwitch(SYNC_BTN_IC, R.id.sync_btn_ic, checked -> findViewById(R.id.sync_to).setVisibility(checked ? VISIBLE : GONE)),
+                new PreferenceSwitch(SYNC_PAUSE, R.id.sync_pause, null)
+        )) {
+            var switchView = content.<Switch>findViewById(preferenceSwitch.id);
+            switchView.setChecked(prefs.is(preferenceSwitch.preference));
+            switchView.setOnCheckedChangeListener((checkbox, checked) -> {
+                prefs.set(preferenceSwitch.preference, checked);
+                if (preferenceSwitch.onChange != null) preferenceSwitch.onChange.onChange(checked);
+            });
+        }
 
         // show
         new AlertDialog.Builder(this)
@@ -401,6 +341,12 @@ public class Editor extends Activity {
                 .setTitle(R.string.descr_configure)
                 .setView(content)
                 .show();
+    }
+
+    record PreferenceSwitch(Preferences.Pref preference, int id, OnPrefChange onChange) {
+        interface OnPrefChange {
+            void onChange(boolean state);
+        }
     }
 
     /**
@@ -433,8 +379,9 @@ public class Editor extends Activity {
                 dialog.dismiss();
             });
             button.setOnLongClickListener(btn -> {
-                // long click to set in clipboard
-                clipboard.setPrimaryClip(ClipData.newPlainText("TrianguloY", btn.getTag().toString()));
+                // long click to set in input
+                v_label.setText("TrianguloY");
+                v_content.setText(btn.getTag().toString());
                 dialog.dismiss();
                 return true;
             });
@@ -468,12 +415,15 @@ public class Editor extends Activity {
 
         // get
         clipToInput(clipboard.getPrimaryClip());
+
+        noListener = false;
     }
 
     /**
      * Sets the inputs to the values of the clipdata
      */
     private void clipToInput(ClipData clip) {
+
         // set
         if (clip == null) {
             // no content
@@ -517,9 +467,6 @@ public class Editor extends Activity {
 
             Log.d("CLIPBOARD", "--> [" + label + "] " + content);
         }
-
-
-        noListener = false;
     }
 
     /**
@@ -530,31 +477,25 @@ public class Editor extends Activity {
         if (noListener) return;
         noListener = true;
 
-        // get
-        CharSequence content = v_content.getText();
-        CharSequence label = v_label.getText();
-
         // set
-        clipboard.setPrimaryClip(ClipData.newPlainText(label, content));
+        var clip = inputAsPrimaryClip();
+        clipboard.setPrimaryClip(clip);
 
-        Log.d("CLIPBOARD", "<-- [" + label + "] " + content);
+        Log.d("CLIPBOARD", "Input --> " + clip);
 
         noListener = false;
     }
 
     /**
      * Returns the input as primary clip
-     * in sync mode, the clipboard one is returned (may contain more data)
      */
     private ClipData inputAsPrimaryClip() {
-        return prefs.isSync()
-                ? clipboard.getPrimaryClip()
-                : ClipData.newPlainText(v_label.getText().toString(), v_content.getText().toString());
+        return ClipData.newPlainText(v_label.getText().toString(), v_content.getText().toString());
     }
 
     /** Computes and diplays statistics about the textview content */
     private void computeStatistics(Editable editable) {
-        if (prefs.enabledStatistics()) {
+        if (prefs.is(STATISTICS)) {
             var string = editable.toString();
             var trimmed = string.trim();
             v_statistics.setText(getString(R.string.statistics,

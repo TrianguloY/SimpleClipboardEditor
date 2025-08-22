@@ -20,45 +20,76 @@
         android:text="@string/conf_capitalize" />
 
     <Switch
-        android:id="@+id/sync"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="48dp"
-        android:text="@string/conf_sync" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/conf_delay"
-            android:textAppearance="@android:style/TextAppearance" />
-
-        <SeekBar
-            android:id="@+id/delay"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:max="20"
-            android:minHeight="48dp" />
-
-        <TextView
-            android:id="@+id/delayTxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minWidth="50dp"
-            android:text="@string/conf_delay_s"
-            android:textAppearance="@android:style/TextAppearance" />
-    </LinearLayout>
-
-    <Switch
         android:id="@+id/statistics"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="48dp"
         android:text="@string/conf_statistics" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:contentDescription="@null"
+        android:src="@android:color/darker_gray" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="@string/conf_sync_ci" />
+
+    <Switch
+        android:id="@+id/sync_start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:text="@string/conf_sync_start" />
+
+    <Switch
+        android:id="@+id/sync_btn_ci"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:text="@string/conf_sync_btn_ci" />
+
+    <Switch
+        android:id="@+id/sync_external"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:text="@string/conf_sync_external" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingTop="10dp"
+        android:paddingBottom="5dp"
+        android:text="@string/conf_sync_ic" />
+
+    <Switch
+        android:id="@+id/sync_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:text="@string/conf_sync_input" />
+
+    <Switch
+        android:id="@+id/sync_btn_ic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:text="@string/conf_sync_btn_ic" />
+
+    <Switch
+        android:id="@+id/sync_pause"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:text="@string/conf_sync_pause" />
+
 </LinearLayout>

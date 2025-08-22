@@ -37,10 +37,15 @@ Made by TrianguloY. Extremely small, efficient, without any permissions, free an
     <!-- settings -->
     <string name="conf_keyboard">Show keyboard when app opens</string>
     <string name="conf_capitalize">Capitalize first letter of input sentences (some keyboards may ignore this)</string>
-    <string name="conf_sync">Automatic sync between clipboard and inputs</string>
-    <string name="conf_delay">Sync after input delay</string>
-    <string name="conf_delay_s">%ss</string>
     <string name="conf_statistics">Show content statistics</string>
+    <string name="conf_sync_ci">Clipboard → Input sync:</string>
+    <string name="conf_sync_start">When app starts (unless text were sent to the app)</string>
+    <string name="conf_sync_btn_ci">Manually (button)</string>
+    <string name="conf_sync_external">When clipboard changes externally</string>
+    <string name="conf_sync_ic">Input → Clipboard sync:</string>
+    <string name="conf_sync_input">When input textbox changes</string>
+    <string name="conf_sync_btn_ic">Manually (button)</string>
+    <string name="conf_sync_pause">When dialog closes/loses focus</string>
 
     <!-- shortcuts -->
     <string name="shortcut_clear">Clear clipboard</string>
