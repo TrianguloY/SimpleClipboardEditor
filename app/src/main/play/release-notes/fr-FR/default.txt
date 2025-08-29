@@ -1,3 +1,9 @@
+V1.6
+- Split sync mode into several independently configurable events
+- Added content statistics (can be disabled)
+- Improve dialog icons and styles
+- Fix notification permission request
+
 V1.5
 - Envoyé du texte à l'application
 - Éditer le texte sélectionné (Android 6.0+)
