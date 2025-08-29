@@ -35,7 +35,6 @@ Réalisé par TrianguloY. Extrêmement léger, efficace, sans aucune autorisatio
     <!-- settings -->
     <string name="conf_keyboard">"Faire apparaître le clavier à l'ouverture de l'application"</string>
     <string name="conf_capitalize">Capitaliser la première lettre des phrases saisies (certains claviers peuvent ignorer cela)</string>
-    <string name="conf_sync">Synchronisation automatique entre presse-papiers et entrées</string>
 
     <!-- shortcuts -->
     <string name="shortcut_clear">Effacer le presse-papier</string>

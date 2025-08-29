@@ -22,14 +22,24 @@ Hecha por TrianguloY. Extremadamente pequeña, eficiente, sin permisos, gratuita
     <string name="descr_info">Información</string>
     <string name="txt_empty">vacío</string>
     <string name="txt_itemcount">\nnúmero de elementos = </string>
+    <string name="statistics">líneas: %d , palabras: %d , caracteres: %s</string>
     <string name="channel_name">Texto</string>
     <string name="channel_description">Texto del portapapeles</string>
+    <string name="noPermission">Permiso no concedido</string>
     <string name="conf_keyboard">Mostrar teclado al abrir la aplicación</string>
     <string name="conf_capitalize">Poner en mayúsculas la primera letra de cada frase (algunos teclados puede que lo ignoren)</string>
     <string name="descr_sync_to">Reemplaza el valor del portapapeles con el texto introducido</string>
     <string name="descr_sync_from">Reemplaza el texto introducido con el valor del portapapeles</string>
-    <string name="conf_sync">Sincronizar automáticamente el contenido del portapapeles con los textos introducidos</string>
+    <string name="conf_sync_pause">Cuando el diálogo se cierra o pierde foco</string>
     <string name="shortcut_clear">Borrar portapapeles</string>
     <string name="toast_cleared">Portapapeles borrado</string>
     <string name="process">Editor del portapapels</string><string name="clip_selection">selección</string><string name="clip_sent">compartido</string>
+    <string name="conf_statistics">Mostrar estadísticas del contenido</string>
+    <string name="conf_sync_ci">Sincronizar portapapeles → cuadro de texto:</string>
+    <string name="conf_sync_start">Cuando la aplicación se inicia (a no ser que se envió texto a ella)</string>
+    <string name="conf_sync_btn_ci">Manual (botón)</string>
+    <string name="conf_sync_external">Cuando el portapapeles cambia externamente</string>
+    <string name="conf_sync_ic">Sincronizar cuadro de texto → portapapeles:</string>
+    <string name="conf_sync_input">Cuando el cuadro de texto cambia</string>
+    <string name="conf_sync_btn_ic">Manual (botón)</string>
 </resources>

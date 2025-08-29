@@ -35,7 +35,6 @@ Feito por TrianguloY, traduzido por mezysinc. Extremamente pequeno, eficiente, s
     <!-- settings -->
     <string name="conf_keyboard">Mostrar teclado quando o app for aberto</string>
     <string name="conf_capitalize">Colocar a primeira letra em maiúscula em frases de entrada (alguns teclados podem ignorar isso)</string>
-    <string name="conf_sync">Sincronização automática entre o clipboard e as entradas</string>
 
     <!-- shortcuts -->
     <string name="shortcut_clear">Limpar clipboard</string>
