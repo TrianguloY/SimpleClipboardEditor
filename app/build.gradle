@@ -11,7 +11,7 @@ android {
         applicationId "com.trianguloy.clipboardeditor"
         minSdk 14
         targetSdkVersion 35
-        versionCode 7
+        versionCode 8
         versionName "1.6"
     }
 
