@@ -70,8 +70,7 @@
     <HorizontalScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:padding="5dp">
+        android:layout_gravity="center">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -104,16 +103,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="end|right"
-                android:padding="5dp"
+                android:padding="2dp"
                 android:text="@string/statistics" />
 
         </LinearLayout>
     </HorizontalScrollView>
+
     <HorizontalScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:padding="5dp">
+        android:layout_gravity="center">
 
         <LinearLayout
             android:layout_width="wrap_content"

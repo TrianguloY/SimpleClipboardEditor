@@ -140,12 +140,11 @@ public class Editor extends Activity {
             }
         });
 
-        // show keyboard if enabled in settings
-        if (prefs.is(SHOW_KEYBOARD)) {
-            if (v_content.requestFocus()) {
-                ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
-                        .showSoftInput(v_content, InputMethodManager.SHOW_IMPLICIT);
-            }
+        // give focus to the content
+        // & show keyboard if enabled in settings
+        if (v_content.requestFocus() && prefs.is(SHOW_KEYBOARD)) {
+            ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
+                    .showSoftInput(v_content, InputMethodManager.SHOW_IMPLICIT);
         }
 
         // capitalize input state if enabled in settings
@@ -219,9 +218,7 @@ public class Editor extends Activity {
 
     // ------------------- buttons -------------------
 
-    /**
-     * Shows a notification with the clipboard content
-     */
+    /** Shows a notification with the clipboard content */
     public void onNotification(View ignored) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !notification.areNotificationsEnabled()) {
@@ -244,7 +241,7 @@ public class Editor extends Activity {
         }
 
         // sets the label as notification title (if any), the content and icon
-        if (!v_label.getText().isEmpty()) builder.setContentTitle(v_label.getText());
+        if (v_label.getText().length() == 0) builder.setContentTitle(v_label.getText());
         builder.setContentText(v_content.getText());
         builder.setSmallIcon(R.drawable.ic_notification);
 
