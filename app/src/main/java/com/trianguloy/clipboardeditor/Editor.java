@@ -2,6 +2,7 @@ package com.trianguloy.clipboardeditor;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.view.View.GONE;
+import static android.view.View.NOT_FOCUSABLE;
 import static android.view.View.VISIBLE;
 import static com.trianguloy.clipboardeditor.Preferences.Pref.CAPITALIZE;
 import static com.trianguloy.clipboardeditor.Preferences.Pref.SHOW_KEYBOARD;
@@ -129,6 +130,11 @@ public class Editor extends Activity {
         // manual buttons
         findViewById(R.id.sync_to).setVisibility(prefs.is(SYNC_BTN_IC) ? VISIBLE : GONE);
         findViewById(R.id.sync_from).setVisibility(prefs.is(SYNC_BTN_CI) ? VISIBLE : GONE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // avoid focusing the statistics if the manual buttons are both disabled
+            // for some reason the xml property does not work
+            findViewById(R.id.extra_parent).setFocusable(NOT_FOCUSABLE);
+        }
 
         // auto-update result
         v_content.addTextChangedListener(new SimpleTextWatcher() {
