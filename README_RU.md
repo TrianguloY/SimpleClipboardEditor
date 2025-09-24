@@ -1,8 +1,15 @@
 [English](README.md) | **Русский**
 
-# Простой редактор буфера обмена
+<div align="center">
+  <img src="app/src/main/play/listings/en-US/graphics/icon/ic_launcher-playstore.png" alt="Simple Clipboard Editor Logo" width="150" />
+</div>
 
-Приложение для Android от TrianguloY
+<h1 align="center">Simple Clipboard Editor</h1>
+
+<p align="center">Android app made by TrianguloY</p>
+
+<div align="center">
+</div>
 
 Скачайте в Google Play:  
 https://play.google.com/store/apps/details?id=com.trianguloy.clipboardeditor  
