@@ -1,0 +1,45 @@
+<resources>
+    <string name="app_name">Простой редактор буфера обмена</string>
+    <string name="about">Это приложение отображает текущее содержимое буфера обмена вашего телефона.
+Если это текст, вы можете редактировать, заменять, удалять или выполнять любые другие изменения прямо в приложении.
+Также вы можете поделиться содержимым или создать уведомление с ним для дальнейшего использования.
+
+Примечание: из-за ограничений Google приложение не может работать с буфером обмена, когда закрыто. Оно автоматически обновится при повторном открытии. Функция истории пока отсутствует.
+
+Разработано TrianguloY. Очень маленькое, эффективное, без разрешений, бесплатное и без рекламы.</string>
+    <string name="blog">Блог</string>
+    <string name="source_code">Исходный код</string>
+    <string name="play_store">Play Store</string>
+    <string name="label_label">Метка:</string>
+    <string name="label_content">Содержимое:</string>
+    <string name="label_mimetype">MIME-тип:</string>
+    <string name="descr_notify">Установить как уведомление</string>
+    <string name="descr_share">Поделиться</string>
+    <string name="descr_clear">Очистить</string>
+    <string name="descr_configure">Настройки</string>
+    <string name="descr_info">Информация</string>
+    <string name="descr_sync_to">Заменить данные буфера обмена значением из поля ввода</string>
+    <string name="descr_sync_from">Заменить значение поля ввода данными из буфера обмена</string>
+    <string name="txt_empty">пусто</string>
+    <string name="txt_itemcount">\nКоличество элементов = </string>
+    <string name="clip_sent">отправлено</string>
+    <string name="statistics">строк: %d, слов: %d, символов: %s</string>
+    <string name="channel_name">Текст</string>
+    <string name="channel_description">Текст из буфера обмена</string>
+    <string name="noPermission">Разрешение не предоставлено</string>
+    <string name="conf_keyboard">Показывать клавиатуру при запуске приложения</string>
+    <string name="conf_capitalize">Делать заглавной первую букву предложений (некоторые клавиатуры могут игнорировать)</string>
+    <string name="conf_statistics">Отображать статистику содержимого</string>
+    <string name="conf_sync_ci">Синхронизация Буфер обмена → Ввод:</string>
+    <string name="conf_sync_start">При запуске приложения (если текст не передан извне)</string>
+    <string name="conf_sync_btn_ci">Вручную (кнопка)</string>
+    <string name="conf_sync_external">При внешних изменениях буфера обмена</string>
+    <string name="conf_sync_ic">Синхронизация Ввод → Буфер обмена:</string>
+    <string name="conf_sync_input">При изменениях поля ввода</string>
+    <string name="conf_sync_btn_ic">Вручную (кнопка)</string>
+    <string name="conf_sync_pause">При закрытии диалогового окна или потере фокуса</string>
+    <string name="shortcut_clear">Очистить буфер обмена</string>
+    <string name="toast_cleared">Буфер обмена очищен</string>
+    <string name="process">Редактор буфера обмена</string>
+    <string name="clip_selection">выделение</string>
+</resources>
