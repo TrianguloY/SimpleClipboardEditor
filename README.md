@@ -1,3 +1,5 @@
+**English** | [Русский](README_RU.md)
+
 # Simple Clipboard Editor
 
 Android app made by TrianguloY
