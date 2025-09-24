@@ -6,7 +6,7 @@
 
 <h1 align="center">Simple Clipboard Editor</h1>
 
-<p align="center">Android app made by TrianguloY</p>
+<p align="center">Приложение для Android от TrianguloY</p>
 
 <div align="center">
 </div>
