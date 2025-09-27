@@ -11,14 +11,14 @@
 <div align="center">
 </div>
 
-Скачайте в Google Play:  
-https://play.google.com/store/apps/details?id=com.trianguloy.clipboardeditor  
+Скачайте в Google Play: 
+[ссылка](https://play.google.com/store/apps/details?id=com.trianguloy.clipboardeditor) 
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png"
 alt="Скачать в Google Play"
 height="80">](https://play.google.com/store/apps/details?id=com.trianguloy.clipboardeditor)
 
-Скачайте в F-Droid:  
-https://f-droid.org/packages/com.trianguloy.clipboardeditor/  
+Скачайте в F-Droid: 
+[ссылка](https://f-droid.org/packages/com.trianguloy.clipboardeditor/) 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
 alt="Скачать в F-Droid"
 height="80">](https://f-droid.org/packages/com.trianguloy.clipboardeditor/)
@@ -27,4 +27,4 @@ height="80">](https://f-droid.org/packages/com.trianguloy.clipboardeditor/)
 
 Как указать авторство:
 - Вы должны добавить мой ник (TrianguloY) в разделе «О приложении» или «Благодарности», где это будет видно пользователю.
-- Вы должны добавить ссылку на главную страницу этого GitHub-репозитория (https://github.com/TrianguloY/SimpleClipboardEditor) или на подраздел репозитория (если использовалась часть кода или ресурса) в разделе «О приложении» или «Благодарности», где это будет видно пользователю.
+- Вы должны добавить ссылку на главную страницу этого GitHub-репозитория (```https://github.com/TrianguloY/SimpleClipboardEditor```) или на подраздел репозитория (если использовалась часть кода или ресурса) в разделе «О приложении» или «Благодарности», где это будет видно пользователю.
